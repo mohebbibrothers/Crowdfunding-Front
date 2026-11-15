@@ -12,13 +12,13 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   verify:
     name: بررسی کیفیت و ساخت
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
 
     steps:
       - uses: actions/checkout@v4
@@ -50,3 +50,23 @@ jobs:
           API_BASE_URL: https://api.alavi-fars.ir
           NEXT_PUBLIC_API_BASE_URL: https://api.alavi-fars.ir
           NEXT_PUBLIC_SITE_URL: https://alavi-fars.ir
+
+      # ── بستهٔ اجرا برای هاست ────────────────────────────────────────────────
+      # هاست سهمیهٔ دیسک ۱ گیگابایتی دارد و نمی‌تواند node_modules را نصب کند؛
+      # پس خروجی خودبسندهٔ Next را بسته‌بندی و به‌عنوان آرتیفکت عمومی منتشر می‌کنیم.
+      - name: آماده‌سازی بستهٔ اجرا
+        if: github.event_name != 'pull_request'
+        run: |
+          cp -r .next/static .next/standalone/.next/static
+          cp -r public .next/standalone/public
+          tar -czf front-build.tar.gz -C .next/standalone .
+          ls -lh front-build.tar.gz
+
+      - name: انتشار بسته روی Releases
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view build-latest >/dev/null 2>&1 \
+            || gh release create build-latest --title "بیلد آخر فرانت" --notes "خروجی خودکار CI — با هر push به main جایگزین می‌شود."
+          gh release upload build-latest front-build.tar.gz --clobber
