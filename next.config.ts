@@ -36,6 +36,18 @@ const nextConfig: NextConfig = {
     ],
     formats: ["image/avif", "image/webp"],
   },
+  /**
+   * چالش ACME را به یک Route Handler معمولی نگاشت می‌کنیم؛ پوشه‌های نقطه‌دار
+   * (`.well-known`) در App Router قابل اتکا نیستند.
+   */
+  async rewrites() {
+    return [
+      {
+        source: "/.well-known/acme-challenge/:token",
+        destination: "/api/acme/:token",
+      },
+    ];
+  },
   async headers() {
     return [
       {
