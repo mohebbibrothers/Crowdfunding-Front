@@ -5,14 +5,6 @@ const nextConfig: NextConfig = {
   // فقط برای پیش‌نمایش محلی سندباکس؛ در تولید اثری ندارد.
   allowedDevOrigins: ["127.0.0.1", "localhost", "0.0.0.0"],
   poweredByHeader: false,
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
-  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "api.alavi-fars.ir" },

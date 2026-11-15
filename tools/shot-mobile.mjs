@@ -11,7 +11,7 @@ const ctx = await browser.newContext({
 const page = await ctx.newPage();
 const errs = [];
 page.on("pageerror", (e) => errs.push(e.message));
-await page.goto("http://127.0.0.1:3000/", { waitUntil: "networkidle", timeout: 60000 });
+await page.goto("http://127.0.0.1:3001/", { waitUntil: "domcontentloaded", timeout: 60000 });
 await page.waitForTimeout(500);
 
 const shots = [
