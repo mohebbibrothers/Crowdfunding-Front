@@ -7,7 +7,7 @@ const ctx = await browser.newContext({
   locale: "fa-IR",
 });
 const page = await ctx.newPage();
-await page.goto("http://127.0.0.1:3000/", { waitUntil: "domcontentloaded", timeout: 60000 });
+await page.goto("http://127.0.0.1:3009/", { waitUntil: "domcontentloaded", timeout: 60000 });
 await page.waitForTimeout(1200);
 
 const shots = [

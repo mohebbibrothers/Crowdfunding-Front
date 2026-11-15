@@ -15,32 +15,52 @@ function ShareMosaic({ filledPercent }: { filledPercent: number }) {
   const filled = Math.round((Math.min(100, Math.max(0, filledPercent)) / 100) * total);
 
   return (
-    <div
-      aria-hidden
-      className="grid w-full min-w-0 grid-cols-11 gap-1.5 rounded-card border border-line bg-surface/70 p-4 shadow-e3 backdrop-blur-sm"
-    >
-      {Array.from({ length: total }, (_, index) => {
-        const isFilled = index < filled;
-        const isEdge = index % 11 === 0 || index % 11 === 10;
-        return (
-          <span
-            key={index}
-            className={cn(
-              "aspect-square min-w-0 rounded-[4px] transition-colors duration-500",
-              isFilled
-                ? index % 9 === 0
-                  ? "bg-gold-soft"
-                  : "bg-accent"
-                : isEdge
-                  ? "bg-surface-3"
-                  : "bg-surface-2",
-            )}
-            style={{
-              animationDelay: `${(index % 11) * 18 + Math.floor(index / 11) * 14}ms`,
-            }}
-          />
-        );
-      })}
+    <div className="w-full min-w-0 rounded-card border border-line bg-surface/70 p-4 shadow-e3 backdrop-blur-sm">
+      <div
+        role="img"
+        aria-label={`نمودار سهم‌های حرکت: ${filledPercent} درصد تأمین شده است`}
+        className="grid grid-cols-11 gap-1.5"
+      >
+        {Array.from({ length: total }, (_, index) => {
+          const isFilled = index < filled;
+          const isEdge = index % 11 === 0 || index % 11 === 10;
+          return (
+            <span
+              key={index}
+              className={cn(
+                "aspect-square min-w-0 rounded-[4px] transition-colors duration-500",
+                isFilled
+                  ? index % 9 === 0
+                    ? "bg-gold-soft"
+                    : "bg-accent"
+                  : isEdge
+                    ? "bg-surface-3"
+                    : "bg-surface-2",
+              )}
+              style={{
+                animationDelay: `${(index % 11) * 18 + Math.floor(index / 11) * 14}ms`,
+              }}
+            />
+          );
+        })}
+      </div>
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 border-t border-line/70 pt-2.5 text-[0.7rem] text-muted">
+        <span className="font-semibold text-ink-soft">هر مربع، یک سهم</span>
+        <span className="flex flex-wrap items-center gap-x-3.5 gap-y-1">
+          <span className="inline-flex items-center gap-1.5">
+            <span className="size-2.5 rounded-[3px] bg-accent" aria-hidden />
+            تأمین‌شده
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="size-2.5 rounded-[3px] bg-gold-soft" aria-hidden />
+            سهم حامی
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="size-2.5 rounded-[3px] bg-surface-3" aria-hidden />
+            باقی‌مانده
+          </span>
+        </span>
+      </div>
     </div>
   );
 }
