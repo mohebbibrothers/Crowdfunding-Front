@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: بررسی کیفیت و ساخت
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: نصب Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: نصب وابستگی‌ها
+        run: npm ci
+
+      - name: قالب‌بندی
+        run: npm run format:check
+
+      - name: لینت
+        run: npm run lint
+
+      - name: بررسی نوع‌ها
+        run: npm run typecheck
+
+      - name: آزمون واحد
+        run: npm run test
+
+      - name: ساخت تولیدی
+        run: npm run build
+        env:
+          API_BASE_URL: https://api.alavi-fars.ir
+          NEXT_PUBLIC_API_BASE_URL: https://api.alavi-fars.ir
+          NEXT_PUBLIC_SITE_URL: https://alavi-fars.ir
