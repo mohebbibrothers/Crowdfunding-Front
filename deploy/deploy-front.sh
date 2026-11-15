@@ -17,6 +17,8 @@ step() { printf '\n%s %s\n' "$LOG_PREFIX" "$1"; }
 
 # --- فعال‌سازی محیط Node ---------------------------------------------------
 # اول virtualenv خودِ اپ در cPanel، بعد مسیر سیستمی CloudLinux.
+# نکته: اسکریپت activate خودِ cPanel با set -u سازگار نیست، پس موقتاً خاموش می‌شود.
+set +u
 if [ -f "$HOME/nodevenv/$APP_NAME/22/bin/activate" ]; then
   # shellcheck disable=SC1091
   source "$HOME/nodevenv/$APP_NAME/22/bin/activate"
@@ -29,12 +31,14 @@ else
     fi
   done
 fi
+set -u
 if ! command -v node >/dev/null 2>&1; then
   export PATH="/opt/alt/alt-nodejs22/root/usr/bin:$PATH"
 fi
 command -v node >/dev/null 2>&1 || { echo "خطا: node پیدا نشد." >&2; exit 1; }
 
-export NODE_ENV=production
+# NODE_ENV عمداً اینجا ست نمی‌شود: با NODE_ENV=production دستور npm ci
+# وابستگی‌های dev (tailwind و typescript) را نصب نمی‌کند و build می‌شکند.
 export NEXT_TELEMETRY_DISABLED=1
 
 step "۱/۶ بررسی پوشهٔ برنامه (node $(node -v))"
@@ -50,7 +54,7 @@ step "۳/۶ نصب وابستگی‌ها (npm ci)"
 npm ci --no-audit --no-fund
 
 step "۴/۶ ساخت تولیدی (next build)"
-if ! npm run build; then
+if ! NODE_ENV=production npm run build; then
   echo "خطا: ساخت شکست خورد. نسخهٔ قبلی همچنان سرو می‌شود." >&2
   exit 1
 fi
