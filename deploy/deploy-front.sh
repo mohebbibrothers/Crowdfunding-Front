@@ -65,11 +65,21 @@ git fetch --prune origin
 git checkout "$BRANCH"
 git reset --hard "origin/$BRANCH"
 
-step "۳/۶ نصب وابستگی‌ها (npm ci --include=dev)"
-# چرا include=dev: در محوطهٔ cPanel متغیر NODE_ENV=production بالاست و npm ci
-# بدون این سوئیچ، typescript و @tailwindcss/postcss را نصب نمی‌کند؛ نتیجه‌اش
-# شکستن مسیرهای «@/» و خط لولهٔ CSS است.
-NODE_ENV=development npm ci --include=dev --no-audit --no-fund
+step "۳/۶ نصب وابستگی‌ها (npm ci --omit=dev)"
+# چرا omit=dev: سهمیهٔ دیسک این حساب کوچک است و ابزارهای توسعه (eslint، vitest،
+# playwright، testing-library) حدود ۱۵۰ مگابایت اضافه می‌کنند. هرچه برای build
+# لازم است (typescript، tailwindcss، @tailwindcss/postcss، @types/*) در
+# dependencies تعریف شده تا با نصب تولیدی هم بیاید. کیفیت در CI سنجیده می‌شود.
+NODE_ENV=production npm ci --omit=dev --no-audit --no-fund
+
+step "۳٫۴/۶ حذف باینری‌های swc که روی این هاست بارگذاری نمی‌شوند"
+# glibc این سرور قدیمی‌تر از ۲.۲۹ است، پس نسخهٔ gnu/musl هرگز بالا نمی‌آید و
+# Next خودش به بایندینگ WASM برمی‌گردد. حذفشان ~۸۵ مگابایت آزاد می‌کند و لاگ را
+# از هشدارهای تکراری پاک می‌کند.
+rm -rf "$APP_DIR/node_modules/@next/swc-linux-x64-gnu" \
+       "$APP_DIR/node_modules/@next/swc-linux-x64-musl"
+# ابزار e2e روی هاست لازم نیست (آزمون‌های مرورگر در CI اجرا می‌شوند)
+rm -rf "$APP_DIR/node_modules/@playwright" "$APP_DIR/node_modules/playwright" "$APP_DIR/node_modules/playwright-core"
 
 step "۳٫۵/۶ بررسی بسته‌های لازم برای بیلد"
 missing=""
