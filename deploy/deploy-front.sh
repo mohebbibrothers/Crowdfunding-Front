@@ -50,11 +50,28 @@ git fetch --prune origin
 git checkout "$BRANCH"
 git reset --hard "origin/$BRANCH"
 
-step "۳/۶ نصب وابستگی‌ها (npm ci)"
-npm ci --no-audit --no-fund
+step "۳/۶ نصب وابستگی‌ها (npm ci --include=dev)"
+# چرا include=dev: در محوطهٔ cPanel متغیر NODE_ENV=production بالاست و npm ci
+# بدون این سوئیچ، typescript و @tailwindcss/postcss را نصب نمی‌کند؛ نتیجه‌اش
+# شکستن مسیرهای «@/» و خط لولهٔ CSS است.
+NODE_ENV=development npm ci --include=dev --no-audit --no-fund
+
+step "۳٫۵/۶ بررسی بسته‌های لازم برای بیلد"
+missing=""
+for pkg in typescript "@tailwindcss/postcss" next react; do
+  [ -d "$APP_DIR/node_modules/$pkg" ] || missing="$missing $pkg"
+done
+if [ -n "$missing" ]; then
+  echo "خطا: این بسته‌ها پس از npm ci موجود نیستند:$missing" >&2
+  exit 1
+fi
+echo "بسته‌های بیلد کامل‌اند."
+
+# اولویت به next خودِ پروژه (نه نسخهٔ داخل virtualenv)
+export PATH="$APP_DIR/node_modules/.bin:$PATH"
 
 step "۴/۶ ساخت تولیدی (next build)"
-if ! NODE_ENV=production npm run build; then
+if ! NODE_ENV=production PATH="$APP_DIR/node_modules/.bin:$PATH" npm run build; then
   echo "خطا: ساخت شکست خورد. نسخهٔ قبلی همچنان سرو می‌شود." >&2
   exit 1
 fi
