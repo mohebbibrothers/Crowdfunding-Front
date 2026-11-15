@@ -42,6 +42,21 @@ command -v node >/dev/null 2>&1 || { echo "خطا: node پیدا نشد." >&2; e
 export NEXT_TELEMETRY_DISABLED=1
 
 step "۱/۶ بررسی پوشهٔ برنامه (node $(node -v))"
+AVAIL_KB=$(df -Pk "$HOME" 2>/dev/null | awk 'NR==2{print $4}')
+AVAIL_MB=$(( AVAIL_KB / 1024 ))
+echo "فضای آزاد قابل استفاده: ${AVAIL_MB}MB"
+if [ "$AVAIL_MB" -lt 1200 ]; then
+  cat >&2 <<'MSG'
+خطا: فضای آزاد کافی نیست (کمتر از ۱٫۲ گیگابایت).
+node_modules کامل (Next + swc + ابزار تست) حدود ۱ گیگابایت می‌خواهد.
+برای آزادسازی:
+  rm -rf ~/Crowdfunding-Front/node_modules ~/Crowdfunding-Front/.next
+  npm cache clean --force
+  rm -rf ~/nodevenv/Crowdfunding-Front/22/lib/node_modules
+سپس دوباره اجرا کنید.
+MSG
+  exit 1
+fi
 [ -d "$APP_DIR/.git" ] || { echo "خطا: $APP_DIR مخزن گیت نیست." >&2; exit 1; }
 cd "$APP_DIR"
 
