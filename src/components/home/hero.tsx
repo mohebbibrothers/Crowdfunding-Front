@@ -12,17 +12,22 @@ import { cn } from "@/lib/utils/cn";
  */
 function ShareMosaic({ filledPercent }: { filledPercent: number }) {
   const total = 11 * 7;
-  const filled = Math.round((Math.min(100, Math.max(0, filledPercent)) / 100) * total);
+  const percent = Math.min(100, Math.max(0, filledPercent));
+  const filled = Math.round((percent / 100) * total);
+  // «سهم بعدی»: نشانه‌ای برای اولین خانهٔ خالی، تا موزاییکِ صفر‌درصد هم مرده به نظر نرسد
+  // بدون آنکه عددی ساختگی نشان داده شود.
+  const nextIndex = filled < total ? filled : -1;
 
   return (
     <div className="w-full min-w-0 rounded-card border border-line bg-surface/70 p-4 shadow-e3 backdrop-blur-sm">
       <div
         role="img"
-        aria-label={`نمودار سهم‌های حرکت: ${filledPercent} درصد تأمین شده است`}
+        aria-label={`${formatPercent(percent)} از سهم‌های این حرکت تأمین شده است`}
         className="grid grid-cols-11 gap-1.5"
       >
         {Array.from({ length: total }, (_, index) => {
           const isFilled = index < filled;
+          const isNext = index === nextIndex;
           const isEdge = index % 11 === 0 || index % 11 === 10;
           return (
             <span
@@ -33,9 +38,11 @@ function ShareMosaic({ filledPercent }: { filledPercent: number }) {
                   ? index % 9 === 0
                     ? "bg-gold-soft"
                     : "bg-accent"
-                  : isEdge
-                    ? "bg-surface-3"
-                    : "bg-surface-2",
+                  : isNext
+                    ? "bg-surface-2 ring-1 ring-gold-soft ring-inset"
+                    : isEdge
+                      ? "bg-surface-3"
+                      : "bg-surface-2",
               )}
               style={{
                 animationDelay: `${(index % 11) * 18 + Math.floor(index / 11) * 14}ms`,
@@ -55,6 +62,15 @@ function ShareMosaic({ filledPercent }: { filledPercent: number }) {
             <span className="size-2.5 rounded-[3px] bg-gold-soft" aria-hidden />
             سهم حامی
           </span>
+          {filled === 0 ? (
+            <span className="inline-flex items-center gap-1.5">
+              <span
+                className="size-2.5 rounded-[3px] bg-surface-2 ring-1 ring-gold-soft ring-inset"
+                aria-hidden
+              />
+              سهم بعدی
+            </span>
+          ) : null}
           <span className="inline-flex items-center gap-1.5">
             <span className="size-2.5 rounded-[3px] bg-surface-3" aria-hidden />
             باقی‌مانده
@@ -148,7 +164,7 @@ export function Hero({
 
         <div className="relative min-w-0">
           <div className="relative mx-auto w-full max-w-md min-w-0">
-            <ShareMosaic filledPercent={hasLive ? Math.max(6, topProgress) : 18} />
+            <ShareMosaic filledPercent={hasLive ? topProgress : 0} />
 
             {hasLive ? (
               <Link

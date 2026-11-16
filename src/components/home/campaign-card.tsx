@@ -39,7 +39,7 @@ const statusMeta: Record<
  * به‌جای حرف اولِ عنوان (که تکراری و بی‌معنا می‌شد) از نشان سهم + نقش هندسی
  * برند استفاده می‌کنیم تا کارت بی‌تصویر هم «طراحی‌شده» به نظر برسد.
  */
-function CoverFallback({ iconName, title }: { iconName: string; title: string }) {
+function CoverFallback({ iconName }: { iconName: string }) {
   return (
     <div aria-hidden className="relative size-full overflow-hidden bg-brand">
       <div
@@ -65,7 +65,6 @@ function CoverFallback({ iconName, title }: { iconName: string; title: string })
         </span>
       </div>
       <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/45 to-transparent" />
-      <span className="sr-only">{title}</span>
     </div>
   );
 }
@@ -111,7 +110,7 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
             className="size-full object-cover transition-transform duration-700 ease-out-soft group-hover:scale-[1.04]"
           />
         ) : (
-          <CoverFallback title={title} iconName={category?.icon_name ?? ""} />
+          <CoverFallback iconName={category?.icon_name ?? ""} />
         )}
 
         <div className="absolute inset-x-3 top-3 flex flex-wrap items-center gap-2">
@@ -141,16 +140,19 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
 
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-center gap-2 text-[0.74rem] text-muted">
-          <span className="inline-flex items-center gap-1 truncate">
-            {benefactor.name}
+          <span className="flex min-w-0 items-center gap-1">
+            <span className="truncate">{benefactor.name}</span>
             {benefactor.is_verified ? (
               <BadgeCheck className="size-3.5 shrink-0 text-accent" aria-label="خیریهٔ تأییدشده" />
             ) : null}
           </span>
-          <span aria-hidden className="text-line-strong">
+          <span aria-hidden className="shrink-0 text-line-strong">
             •
           </span>
-          <Badge tone={state.tone} className="border-0 bg-transparent px-0 text-[0.72rem]">
+          <Badge
+            tone={state.tone}
+            className="shrink-0 border-0 bg-transparent px-0 text-[0.72rem] whitespace-nowrap"
+          >
             {state.label}
           </Badge>
         </div>
@@ -174,7 +176,7 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
               {formatInt(remaining_shares)} از {formatInt(total_shares)} سهم باقی است
             </span>
           </div>
-          <Progress value={progress_percent} label={`پیشرفت تأمین ${title}`} />
+          <Progress value={progress_percent} label={`پیشرفت ${title}`} />
 
           <dl className="mt-4 grid grid-cols-2 gap-3 text-[0.78rem]">
             <div>

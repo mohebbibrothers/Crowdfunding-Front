@@ -23,7 +23,7 @@ export function BenefactorStrip({ benefactors }: { benefactors: BenefactorCard[]
 
         <ul className="mt-6 grid gap-3 sm:grid-cols-2">
           {benefactors.slice(0, 4).map((benefactor) => (
-            <li key={benefactor.id}>
+            <li key={benefactor.id} className="min-w-0">
               <Link
                 href={`/charities/${benefactor.slug}`}
                 className="flex h-full items-center gap-3 rounded-2xl border border-line bg-surface p-4 transition-colors hover:border-brand-soft"
@@ -32,7 +32,7 @@ export function BenefactorStrip({ benefactors }: { benefactors: BenefactorCard[]
                   <Building2 className="size-5" aria-hidden />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="flex items-center gap-1.5">
+                  <span className="flex min-w-0 items-center gap-1.5">
                     <span className="truncate text-[0.86rem] font-bold text-ink">
                       {benefactor.name}
                     </span>

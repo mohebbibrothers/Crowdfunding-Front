@@ -32,7 +32,7 @@ export function SiteHeader() {
     >
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-3 focus:z-50 focus:rounded-pill focus:bg-brand focus:px-4 focus:py-2 focus:text-white"
+        className="sr-only start-4 top-3 focus:not-sr-only focus:absolute focus:z-50 focus:rounded-pill focus:bg-brand focus:px-4 focus:py-2 focus:text-white"
       >
         پرش به محتوای اصلی
       </a>
