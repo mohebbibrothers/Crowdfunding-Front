@@ -1,36 +1,51 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ShieldCheck } from "lucide-react";
 
+import { BrandSignatureV } from "@/components/brand/logo";
 import { ButtonLink } from "@/components/ui/button";
 
 export function FinalCta() {
   return (
-    <section className="shell py-16">
-      <div className="relative overflow-hidden rounded-[1.75rem] bg-brand px-6 py-14 text-center text-on-brand sm:px-12">
-        <div aria-hidden className="ornament-grid absolute inset-0 opacity-25" />
-        <div
-          aria-hidden
-          className="absolute start-1/2 -top-24 size-[26rem] -translate-x-1/2 rounded-full blur-3xl"
-          style={{ background: "radial-gradient(circle, rgba(217,179,86,0.35), transparent 65%)" }}
-        />
-        <div className="relative mx-auto max-w-2xl">
-          <h2 className="display-2 text-on-brand">امروز یک سهم بردار، فردا یک زندگی</h2>
-          <p className="mx-auto mt-5 max-w-xl text-[0.98rem] leading-8 text-on-brand/85">
-            لازم نیست مبلغ بزرگی کنار بگذاری. همین که یک سهم برداری، حرکت یک قدم جلو می‌رود و کسی که
-            منتظر است، یک روز زودتر به نتیجه می‌رسد.
-          </p>
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <ButtonLink href="/campaigns" variant="gold" size="lg">
-              حرکت‌ها را ببین
-              <ArrowLeft className="size-4" aria-hidden />
-            </ButtonLink>
-            <ButtonLink
-              href="/about"
-              size="lg"
-              variant="secondary"
-              className="border-on-brand/25 bg-on-brand/10 text-on-brand hover:border-on-brand/50 hover:text-on-brand"
-            >
-              پرسش‌های پرتکرار
-            </ButtonLink>
+    <section className="pb-4">
+      <div className="shell">
+        <div className="arch-motif relative isolate overflow-hidden rounded-[2.25rem] bg-brand-deep px-6 py-16 text-center text-on-brand sm:px-12 lg:py-20">
+          {/* هالهٔ کهربایی + شبکهٔ نقطه‌ای */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-90"
+            style={{
+              background:
+                "radial-gradient(58% 62% at 50% 8%, color-mix(in oklab, var(--gold) 26%, transparent), transparent 68%)",
+            }}
+          />
+          <div aria-hidden className="dot-grid pointer-events-none absolute inset-0 opacity-20" />
+          <BrandSignatureV className="pointer-events-none absolute start-8 top-1/2 hidden h-40 -translate-y-1/2 opacity-[0.12] lg:block" />
+
+          <div className="relative mx-auto max-w-2xl">
+            <span className="inline-flex items-center gap-2 rounded-pill border border-on-brand/25 px-3.5 py-1.5 text-[0.72rem] font-bold text-on-brand/80">
+              <ShieldCheck className="size-3.5 text-gold" aria-hidden />
+              پرداخت در درگاه رسمی، همراه با رسید
+            </span>
+
+            <h2 className="display-2 mt-6 text-on-brand">امروز یک سهم بردار، فردا یک زندگی</h2>
+            <p className="mx-auto mt-5 max-w-xl text-[0.97rem] leading-8 text-on-brand/80">
+              لازم نیست مبلغ بزرگی کنار بگذاری. همین که یک سهم برداری، حرکت یک قدم جلو می‌رود و کسی
+              که منتظر است، یک روز زودتر به نتیجه می‌رسد.
+            </p>
+
+            <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <ButtonLink href="/campaigns" variant="gold" size="lg">
+                حرکت‌ها را ببین
+                <ArrowLeft className="size-4" aria-hidden />
+              </ButtonLink>
+              <ButtonLink
+                href="/about#faq"
+                size="lg"
+                variant="secondary"
+                className="border-on-brand/25 bg-on-brand/10 text-on-brand hover:border-on-brand/50 hover:text-on-brand"
+              >
+                پرسش‌های پرتکرار
+              </ButtonLink>
+            </div>
           </div>
         </div>
       </div>

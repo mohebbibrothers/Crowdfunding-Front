@@ -1,37 +1,82 @@
+import {
+  ALAVI_MARK_PATH,
+  ALAVI_MARK_TRANSFORM,
+  ALAVI_MARK_VIEWBOX,
+} from "@/components/brand/alavi-paths";
 import { cn } from "@/lib/utils/cn";
 
 /**
- * نشان «هم‌سهم» — سه سهم هم‌گرا که یک دایرهٔ کامل می‌سازند.
- * SVG درون‌خطی: بدون درخواست شبکه، مقیاس‌پذیر و قابل رنگ‌گیری با currentColor.
+ * نشان‌های برند بنیاد علوی.
+ *
+ * - نشان (emblem) به‌صورت SVG درون‌خطی است تا با `currentColor` رنگ بگیرد و
+ *   در هر دو تم درست دیده شود (بدون درخواست شبکه).
+ * - خوشنویسی رسمی از فایل‌های وکتور `public/brand/*-white.svg` خوانده می‌شود؛
+ *   برای سطوح تیره (فوتر و پنل پایانی) طراحی شده و کش می‌شود.
  */
-export function LogoMark({ className }: { className?: string }) {
+
+/** نشانِ بنیاد، رنگ‌پذیر با currentColor. */
+export function BrandMark({ className }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 40 40"
-      role="img"
-      aria-label="نشان هم‌سهم"
-      className={cn("size-9", className)}
-      fill="none"
+      viewBox={ALAVI_MARK_VIEWBOX}
+      aria-hidden
+      focusable="false"
+      className={cn("h-9 w-auto", className)}
+      fill="currentColor"
     >
-      <circle cx="20" cy="20" r="18.25" stroke="currentColor" strokeWidth="1.5" opacity="0.35" />
-      <path d="M20 7.5 L20 20 L11 25.2 Z" fill="currentColor" opacity="0.95" />
-      <path d="M20 20 L32.2 20 L26.1 30.6 Z" fill="currentColor" opacity="0.62" />
-      <path d="M20 20 L7.8 20 L13.9 30.6 Z" fill="currentColor" opacity="0.34" />
-      <circle cx="20" cy="20" r="2.1" fill="var(--gold)" />
+      <g transform={ALAVI_MARK_TRANSFORM}>
+        <path d={ALAVI_MARK_PATH} />
+      </g>
     </svg>
   );
 }
 
-export function Logo({ className, compact = false }: { className?: string; compact?: boolean }) {
+/**
+ * برند هدر: نشان + نام بنیاد با تایپوگرافی زنده.
+ * خوشنویسی در ارتفاع هدر ناخوانا می‌شود؛ پس متن با وزیرمتن نوشته می‌شود و
+ * خوشنویسی رسمی در امضاهای بزرگ (فوتر، پنل پایانی، OG) به کار می‌رود.
+ */
+export function BrandLockup({ className }: { className?: string }) {
   return (
-    <span className={cn("inline-flex items-center gap-2.5 text-accent", className)}>
-      <LogoMark />
-      {!compact && (
-        <span className="flex flex-col leading-none">
-          <span className="text-[1.06rem] font-extrabold tracking-tight">هم‌سهم</span>
-          <span className="mt-0.5 text-[0.62rem] font-medium text-muted">هر سهم، یک قدم</span>
+    <span className={cn("inline-flex items-center gap-2.5", className)}>
+      <BrandMark className="h-9 shrink-0 text-brand sm:h-10" />
+      <span className="flex min-w-0 flex-col leading-none">
+        <span className="text-[1.02rem] font-extrabold tracking-tight text-ink">بنیاد علوی</span>
+        <span className="mt-1 flex items-center gap-1.5 text-[0.6rem] font-semibold tracking-wide text-muted">
+          <span aria-hidden className="h-px w-3 bg-gold" />
+          سامانهٔ هم‌سهم
         </span>
-      )}
+      </span>
     </span>
+  );
+}
+
+/** خوشنویسی افقی رسمی — برای سطوح تیره و اندازهٔ بزرگ. */
+export function BrandSignatureH({ className }: { className?: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/brand/lockup-h-white.svg"
+      alt=""
+      aria-hidden
+      width={3348}
+      height={1494}
+      className={cn("block h-14 w-auto", className)}
+    />
+  );
+}
+
+/** خوشنویسی عمودی رسمی — مهر/امضا در حاشیهٔ پنل‌ها. */
+export function BrandSignatureV({ className }: { className?: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/brand/lockup-v-white.svg"
+      alt=""
+      aria-hidden
+      width={728}
+      height={1456}
+      className={cn("block h-16 w-auto", className)}
+    />
   );
 }

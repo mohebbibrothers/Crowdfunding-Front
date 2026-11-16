@@ -1,45 +1,139 @@
+import { ArrowUp, AtSign, Mail, Send, Video } from "lucide-react";
 import Link from "next/link";
 
-import { Logo } from "@/components/brand/logo";
+import { BrandMark, BrandSignatureH, BrandSignatureV } from "@/components/brand/logo";
 import { brand } from "@/lib/config/brand";
 import { site } from "@/lib/config/site";
 
+const socialIcons = { instagram: AtSign, telegram: Send, aparat: Video } as const;
+
 export function SiteFooter() {
   return (
-    <footer className="mt-24 border-t border-line bg-surface">
-      <div className="shell grid gap-12 py-14 md:grid-cols-[1.4fr_repeat(3,1fr)]">
-        <div className="max-w-sm">
-          <Logo />
-          <p className="mt-4 text-[0.9rem] leading-8 text-muted">{site.description}</p>
-          <p className="mt-5 text-[0.8rem] text-muted">
-            {brand.legalName} · {brand.domain}
-          </p>
+    <footer className="relative mt-28 overflow-hidden bg-brand-deep text-on-brand">
+      {/* هالهٔ کهربایی + شبکهٔ نقطه‌ای، هر دو بی‌تصویر */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-70"
+        style={{
+          background:
+            "radial-gradient(70% 55% at 100% 0%, color-mix(in oklab, var(--gold) 22%, transparent), transparent 62%)",
+        }}
+      />
+      <div aria-hidden className="dot-grid pointer-events-none absolute inset-0 opacity-[0.18]" />
+
+      {/* خط طلایی بالای فوتر */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-gold/60 to-transparent"
+      />
+
+      <div className="shell relative">
+        {/* ── بخش بالا: امضا + ستون‌های لینک ───────────────────────────── */}
+        <div className="grid gap-14 py-16 lg:grid-cols-[1.15fr_1.35fr] lg:gap-16 lg:py-20">
+          <div className="max-w-md">
+            <BrandSignatureH className="h-16 opacity-95" />
+            <p className="mt-7 text-[0.95rem] leading-8 text-on-brand/75">
+              {site.name} سامانهٔ سهم‌محور {site.organisation} است: هر حرکت خیر به سهم‌های روشن تقسیم
+              می‌شود تا مشارکت، ساده، قابل پیگیری و قابل اثبات باشد.
+            </p>
+
+            <div className="mt-7 flex flex-wrap items-center gap-2.5">
+              {brand.socials.map((social) => {
+                const Icon = socialIcons[social.key as keyof typeof socialIcons];
+                return (
+                  <Link
+                    key={social.key}
+                    href={social.href}
+                    aria-label={social.label}
+                    className="inline-flex size-10 items-center justify-center rounded-pill border border-on-brand/20 text-on-brand/80 transition-colors hover:border-gold/60 hover:text-gold"
+                  >
+                    <Icon className="size-[1.05rem]" aria-hidden />
+                  </Link>
+                );
+              })}
+              <Link
+                href={`mailto:${brand.supportEmail}`}
+                className="inline-flex items-center gap-2 rounded-pill border border-on-brand/20 px-4 py-2.5 text-[0.82rem] font-semibold text-on-brand/85 transition-colors hover:border-gold/60 hover:text-gold"
+              >
+                <Mail className="size-4" aria-hidden />
+                <span dir="ltr" className="num">
+                  {brand.supportEmail}
+                </span>
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
+            {site.footer.groups.map((group, groupIndex) => (
+              <nav
+                key={group.title}
+                aria-label={group.title}
+                className={
+                  groupIndex === site.footer.groups.length - 1
+                    ? "col-span-2 sm:col-span-1"
+                    : undefined
+                }
+              >
+                <h2 className="text-[0.8rem] font-bold tracking-wide text-gold">{group.title}</h2>
+                <ul
+                  className={
+                    groupIndex === site.footer.groups.length - 1
+                      ? "mt-4 grid grid-cols-2 gap-x-6 gap-y-3 sm:block sm:space-y-3"
+                      : "mt-4 space-y-3"
+                  }
+                >
+                  {group.links.map((link) => (
+                    <li key={link.href + link.label}>
+                      <Link
+                        href={link.href}
+                        className="group inline-flex items-center gap-1.5 text-[0.88rem] text-on-brand/70 transition-colors hover:text-on-brand"
+                      >
+                        <span className="h-px w-0 bg-gold transition-all duration-300 ease-out-soft group-hover:w-3" />
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ))}
+          </div>
         </div>
 
-        {site.footer.groups.map((group) => (
-          <nav key={group.title} aria-label={group.title}>
-            <h3 className="text-[0.82rem] font-bold text-ink">{group.title}</h3>
-            <ul className="mt-4 space-y-3">
-              {group.links.map((link) => (
-                <li key={link.href + link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-[0.86rem] text-muted transition-colors hover:text-brand"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        ))}
-      </div>
+        {/* ── نوار میانی: مهر برند + جملهٔ پایانی ───────────────────────── */}
+        <div className="flex flex-wrap items-center justify-between gap-6 border-t border-on-brand/12 py-8">
+          <div className="flex items-center gap-3.5">
+            <BrandMark className="h-9 text-gold" />
+            <p className="text-[0.82rem] leading-6 text-on-brand/60">
+              {site.organisation} — نهادی عام‌المنفعه، با مجوز رسمی
+              <br className="hidden sm:block" />
+              <span className="text-on-brand/45"> {site.promise}</span>
+            </p>
+          </div>
 
-      <div className="border-t border-line">
-        <div className="shell flex flex-col items-center justify-between gap-3 py-5 text-[0.78rem] text-muted sm:flex-row">
+          <BrandSignatureV className="hidden h-16 opacity-30 sm:block" />
+
+          <Link
+            href="#main"
+            className="inline-flex items-center gap-2 rounded-pill border border-on-brand/20 px-4 py-2.5 text-[0.8rem] font-semibold text-on-brand/75 transition-colors hover:border-gold/60 hover:text-gold"
+          >
+            <ArrowUp className="size-4" aria-hidden />
+            بازگشت به بالا
+          </Link>
+        </div>
+
+        {/* ── خط پایانی ─────────────────────────────────────────────────── */}
+        <div className="flex flex-col items-center justify-between gap-3 border-t border-on-brand/12 py-6 text-[0.76rem] text-on-brand/50 sm:flex-row">
           <p>© {brand.legalName} — همهٔ حقوق محفوظ است.</p>
-          <p className="flex items-center gap-4">
-            <span>ساخته‌شده با احترام به اعتماد شما</span>
+          <p className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+            <Link href="/about" className="transition-colors hover:text-on-brand/80">
+              شرایط استفاده
+            </Link>
+            <Link href="/about#privacy" className="transition-colors hover:text-on-brand/80">
+              حریم خصوصی
+            </Link>
+            <span dir="ltr" className="num">
+              {brand.domain}
+            </span>
           </p>
         </div>
       </div>

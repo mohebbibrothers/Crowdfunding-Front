@@ -1,14 +1,12 @@
 import { ArrowLeft, BadgeCheck, Clock3, Sparkles, Users } from "lucide-react";
 import Link from "next/link";
 
-import { Badge } from "@/components/ui/badge";
 import { CategoryIcon } from "@/components/ui/category-icon";
 import { Progress } from "@/components/ui/progress";
 import type { CampaignCard as CampaignCardData } from "@/lib/api/schemas";
-import { formatRemaining, formatJalali, toPersianDigits } from "@/lib/format/date";
+import { formatJalali, formatRemaining } from "@/lib/format/date";
 import { formatAmount, formatToman } from "@/lib/format/money";
-import { formatInt } from "@/lib/format/numbers";
-import { formatPercent } from "@/lib/format/numbers";
+import { formatInt, formatPercent } from "@/lib/format/numbers";
 import { cn } from "@/lib/utils/cn";
 
 const urgencyMeta: Record<
@@ -36,35 +34,35 @@ const statusMeta: Record<
 
 /**
  * پوشش گرافیکی جایگزین وقتی حرکت تصویر ندارد.
- * به‌جای حرف اولِ عنوان (که تکراری و بی‌معنا می‌شد) از نشان سهم + نقش هندسی
- * برند استفاده می‌کنیم تا کارت بی‌تصویر هم «طراحی‌شده» به نظر برسد.
+ * به‌جای حرف اولِ عنوان، از نقش هندسی برند و نشان دسته استفاده می‌کند تا
+ * کارتِ بی‌تصویر هم «طراحی‌شده» دیده شود — و هیچ درخواست شبکه‌ای نداشته باشد.
  */
 function CoverFallback({ iconName }: { iconName: string }) {
   return (
-    <div aria-hidden className="relative size-full overflow-hidden bg-brand">
+    <div aria-hidden className="relative size-full overflow-hidden bg-brand-deep">
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 100% at 85% 0%, color-mix(in oklab, var(--gold) 22%, transparent), transparent 60%), radial-gradient(90% 80% at 0% 100%, color-mix(in oklab, var(--brand-soft) 60%, transparent), transparent 65%)",
+            "radial-gradient(115% 100% at 82% 0%, color-mix(in oklab, var(--gold) 34%, transparent), transparent 58%), radial-gradient(95% 85% at 0% 100%, color-mix(in oklab, var(--brand-soft) 85%, transparent), transparent 66%)",
         }}
       />
-      <div className="ornament-grid absolute inset-0 opacity-20" />
+      <div className="dot-grid absolute inset-0 opacity-30" />
       <svg
         viewBox="0 0 40 40"
         aria-hidden
-        className="absolute -start-8 -bottom-8 size-44 text-white/10"
+        className="absolute -start-10 -bottom-10 size-48 text-on-brand/10"
         fill="currentColor"
       >
         <path d="M20 4 L20 20 L6 28 Z" />
         <path d="M20 20 L36 20 L28 34 Z" />
       </svg>
       <div className="relative flex size-full items-center justify-center">
-        <span className="inline-flex size-16 items-center justify-center rounded-2xl border border-white/25 bg-white/10 text-white/90 backdrop-blur-sm">
+        <span className="inline-flex size-16 items-center justify-center rounded-2xl border border-on-brand/25 bg-on-brand/10 text-on-brand/90 backdrop-blur-sm">
           <CategoryIcon name={iconName} className="size-7" />
         </span>
       </div>
-      <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/45 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/50 to-transparent" />
     </div>
   );
 }
@@ -93,7 +91,7 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
   const isFunded = remaining_shares === 0 || status === "funded" || status === "completed";
 
   return (
-    <article className="group card flex h-full flex-col overflow-hidden transition-[transform,box-shadow,border-color] duration-300 ease-out-soft hover:-translate-y-1 hover:border-line-strong hover:shadow-e3">
+    <article className="card card-lift reveal group flex h-full flex-col overflow-hidden">
       <Link
         href={`/campaigns/${slug}`}
         className="relative block aspect-[16/10] w-full overflow-hidden"
@@ -114,7 +112,16 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
         )}
 
         <div className="absolute inset-x-3 top-3 flex flex-wrap items-center gap-2">
-          <Badge tone={urgency.tone} className="backdrop-blur-md">
+          <span
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-pill border border-white/20 bg-black/45 px-2.5 py-1 text-[0.71rem] font-bold backdrop-blur-md",
+              urgency_level === "emergency" || urgency_level === "critical"
+                ? "text-rose-200"
+                : urgency_level === "important"
+                  ? "text-amber-200"
+                  : "text-white/85",
+            )}
+          >
             {urgency_level === "emergency" || urgency_level === "critical" ? (
               <span className="relative flex size-1.5">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-current opacity-60" />
@@ -122,17 +129,18 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
               </span>
             ) : null}
             {urgency.label}
-          </Badge>
-          {active_matching_grant && active_matching_grant.match_ratio > 0 ? (
-            <Badge tone="gold" className="backdrop-blur-md">
+          </span>
+
+          {active_matching_grant && active_matching_grant.match_ratio > 1 ? (
+            <span className="inline-flex items-center gap-1.5 rounded-pill border border-white/20 bg-black/45 px-2.5 py-1 text-[0.71rem] font-bold text-amber-200 backdrop-blur-md">
               <Sparkles className="size-3" aria-hidden />
-              اثر مضاعف ×{toPersianDigits(String(active_matching_grant.match_ratio + 1))}
-            </Badge>
+              اثر مضاعف ×{formatAmount(active_matching_grant.match_ratio)}
+            </span>
           ) : null}
         </div>
 
         {category ? (
-          <span className="absolute inset-x-3 bottom-3 inline-flex w-fit items-center rounded-pill bg-black/35 px-2.5 py-1 text-[0.7rem] font-medium text-white backdrop-blur-md">
+          <span className="absolute inset-x-3 bottom-3 inline-flex w-fit items-center rounded-pill bg-black/35 px-2.5 py-1 text-[0.7rem] font-semibold text-white backdrop-blur-md">
             {category.title}
           </span>
         ) : null}
@@ -149,27 +157,24 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
           <span aria-hidden className="shrink-0 text-line-strong">
             •
           </span>
-          <Badge
-            tone={state.tone}
-            className="shrink-0 border-0 bg-transparent px-0 text-[0.72rem] whitespace-nowrap"
-          >
+          <span className="shrink-0 font-semibold whitespace-nowrap text-accent">
             {state.label}
-          </Badge>
+          </span>
         </div>
 
-        <h3 className="mt-2.5 text-[1.02rem] leading-7 font-bold">
+        <h3 className="mt-2.5 text-[1.03rem] leading-7 font-bold">
           <Link href={`/campaigns/${slug}`} className="transition-colors hover:text-accent">
             {title}
           </Link>
         </h3>
 
         {subtitle ? (
-          <p className="mt-1.5 line-clamp-2 text-[0.82rem] leading-6 text-muted">{subtitle}</p>
+          <p className="mt-1.5 line-clamp-2 text-[0.83rem] leading-6 text-muted">{subtitle}</p>
         ) : null}
 
         <div className="mt-auto pt-5">
           <div className="mb-2 flex items-end justify-between gap-3">
-            <span className="text-[0.78rem] font-semibold text-ink-soft">
+            <span className="text-[0.78rem] font-bold text-accent">
               {formatPercent(progress_percent)} تأمین شده
             </span>
             <span className="num text-[0.74rem] text-muted">
@@ -178,21 +183,21 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
           </div>
           <Progress value={progress_percent} label={`پیشرفت ${title}`} />
 
-          <dl className="mt-4 grid grid-cols-2 gap-3 text-[0.78rem]">
+          <dl className="mt-4 grid grid-cols-2 gap-3 border-t border-line pt-4 text-[0.78rem]">
             <div>
               <dt className="text-muted">هر سهم</dt>
-              <dd className="num mt-0.5 font-bold text-ink">{formatToman(share_price_toman)}</dd>
+              <dd className="num mt-1 font-bold text-ink">{formatToman(share_price_toman)}</dd>
             </div>
             <div>
               <dt className="text-muted">همراهان</dt>
-              <dd className="num mt-0.5 inline-flex items-center gap-1 font-bold text-ink">
+              <dd className="num mt-1 inline-flex items-center gap-1.5 font-bold text-ink">
                 <Users className="size-3.5 text-muted" aria-hidden />
                 {formatInt(supporter_count)} نفر
               </dd>
             </div>
           </dl>
 
-          <div className="mt-4 flex items-center justify-between gap-3 border-t border-line pt-4">
+          <div className="mt-4 flex items-center justify-between gap-3">
             <span className="inline-flex items-center gap-1.5 text-[0.75rem] text-muted">
               <Clock3 className="size-3.5" aria-hidden />
               {isFunded
@@ -202,7 +207,7 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
             <Link
               href={`/campaigns/${slug}`}
               className={cn(
-                "inline-flex items-center gap-1.5 rounded-pill px-3.5 py-2 text-[0.8rem] font-bold transition-colors",
+                "inline-flex items-center gap-1.5 rounded-pill px-4 py-2 text-[0.8rem] font-bold transition-colors",
                 isFunded
                   ? "bg-surface-2 text-ink-soft hover:text-accent"
                   : "bg-brand text-on-brand hover:bg-brand-soft",
@@ -218,7 +223,6 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
   );
 }
 
-/** کارت فشرده برای ردیف‌های افقی (قلک‌ها و پیشنهادها). */
 export function CampaignCardSkeleton() {
   return (
     <div className="card overflow-hidden" aria-hidden>

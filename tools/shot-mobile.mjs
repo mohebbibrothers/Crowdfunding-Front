@@ -1,38 +1,23 @@
 import { chromium } from "playwright-core";
-
-const browser = await chromium.launch();
-const ctx = await browser.newContext({
+const b = await chromium.launch();
+const ctx = await b.newContext({
   viewport: { width: 390, height: 844 },
-  deviceScaleFactor: 2,
-  isMobile: true,
-  hasTouch: true,
   locale: "fa-IR",
+  deviceScaleFactor: 2,
 });
-const page = await ctx.newPage();
-const errs = [];
-page.on("pageerror", (e) => errs.push(e.message));
-await page.goto("http://127.0.0.1:3001/", { waitUntil: "domcontentloaded", timeout: 60000 });
-await page.waitForTimeout(500);
-
-const shots = [
-  ["m-hero", "section:has(h1)"],
-  ["m-card", "article"],
-  ["m-strip", "section:has(h2:has-text('خیریه‌ها'))"],
-];
-for (const [name, sel] of shots) {
-  await page
-    .locator(sel)
-    .first()
-    .screenshot({ path: `/tmp/shots/${name}.png` });
+const p = await ctx.newPage();
+await p.goto("http://127.0.0.1:3013/", { waitUntil: "domcontentloaded", timeout: 60000 });
+await p.waitForTimeout(1000);
+const secs = await p.$$("main > section");
+for (let i = 0; i < secs.length; i++) {
+  const box = await secs[i].boundingBox();
+  await secs[i].screenshot({ path: `/home/user/m-390-s${i + 1}.png` });
+  console.log(`s${i + 1} ${Math.round(box.width)}x${Math.round(box.height)}`);
 }
-
-await page.getByRole("button", { name: /باز کردن منو/ }).click();
-await page.waitForTimeout(400);
-await page.screenshot({ path: "/tmp/shots/m-menu.png" });
-
-const overflow = await page.evaluate(() => ({
-  scrollWidth: document.documentElement.scrollWidth,
-  clientWidth: document.documentElement.clientWidth,
-}));
-globalThis.console.warn("errors:", JSON.stringify(errs), "overflow:", JSON.stringify(overflow));
-await browser.close();
+const f = await p.$("footer");
+await f.screenshot({ path: "/home/user/m-390-footer.png" });
+await p.screenshot({
+  path: "/home/user/m-390-header.png",
+  clip: { x: 0, y: 0, width: 390, height: 90 },
+});
+await b.close();
