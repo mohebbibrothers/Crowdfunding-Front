@@ -94,6 +94,7 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
     <article className="card card-lift reveal group flex h-full flex-col overflow-hidden">
       <Link
         href={`/campaigns/${slug}`}
+        prefetch={false}
         className="relative block aspect-[16/10] w-full overflow-hidden"
         tabIndex={-1}
         aria-hidden
@@ -114,12 +115,12 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
         <div className="absolute inset-x-3 top-3 flex flex-wrap items-center gap-2">
           <span
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-pill border border-white/20 bg-black/45 px-2.5 py-1 text-[0.71rem] font-bold backdrop-blur-md",
+              "inline-flex items-center gap-1.5 rounded-pill border border-white/20 bg-black/60 px-2.5 py-1 text-[0.71rem] font-bold backdrop-blur-md",
               urgency_level === "emergency" || urgency_level === "critical"
                 ? "text-rose-200"
                 : urgency_level === "important"
                   ? "text-amber-200"
-                  : "text-white/85",
+                  : "text-white",
             )}
           >
             {urgency_level === "emergency" || urgency_level === "critical" ? (
@@ -132,7 +133,7 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
           </span>
 
           {active_matching_grant && active_matching_grant.match_ratio > 1 ? (
-            <span className="inline-flex items-center gap-1.5 rounded-pill border border-white/20 bg-black/45 px-2.5 py-1 text-[0.71rem] font-bold text-amber-200 backdrop-blur-md">
+            <span className="inline-flex items-center gap-1.5 rounded-pill border border-white/20 bg-black/60 px-2.5 py-1 text-[0.71rem] font-bold text-amber-100 backdrop-blur-md">
               <Sparkles className="size-3" aria-hidden />
               اثر مضاعف ×{formatAmount(active_matching_grant.match_ratio)}
             </span>
@@ -140,7 +141,7 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
         </div>
 
         {category ? (
-          <span className="absolute inset-x-3 bottom-3 inline-flex w-fit items-center rounded-pill bg-black/35 px-2.5 py-1 text-[0.7rem] font-semibold text-white backdrop-blur-md">
+          <span className="absolute inset-x-3 bottom-3 inline-flex w-fit items-center rounded-pill bg-black/55 px-2.5 py-1 text-[0.7rem] font-semibold text-white backdrop-blur-md">
             {category.title}
           </span>
         ) : null}
@@ -163,7 +164,11 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
         </div>
 
         <h3 className="mt-2.5 text-[1.03rem] leading-7 font-bold">
-          <Link href={`/campaigns/${slug}`} className="transition-colors hover:text-accent">
+          <Link
+            href={`/campaigns/${slug}`}
+            prefetch={false}
+            className="transition-colors hover:text-accent"
+          >
             {title}
           </Link>
         </h3>
@@ -206,6 +211,7 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
             </span>
             <Link
               href={`/campaigns/${slug}`}
+              prefetch={false}
               className={cn(
                 "inline-flex items-center gap-1.5 rounded-pill px-4 py-2 text-[0.8rem] font-bold transition-colors",
                 isFunded

@@ -8,9 +8,14 @@ export const brand = {
   legalName: "بنیاد علوی",
   domain: "alavi-fars.ir",
   supportEmail: "info@alavi-fars.ir",
+  /**
+   * شبکه‌های اجتماعی. هر ورودی که `href` نداشته باشد در فوتر رندر نمی‌شود
+   * تا هیچ‌جا لینک مرده (href="#") نداشته باشیم؛ کافی است آدرس را همین‌جا
+   * پر کنید تا آیکون خودکار برگردد.
+   */
   socials: [
-    { key: "instagram", label: "اینستاگرام", href: "#" },
-    { key: "telegram", label: "تلگرام", href: "#" },
-    { key: "aparat", label: "آپارات", href: "#" },
+    { key: "instagram", label: "اینستاگرام", href: "" },
+    { key: "telegram", label: "تلگرام", href: "" },
+    { key: "aparat", label: "آپارات", href: "" },
   ],
 } as const;

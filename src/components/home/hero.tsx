@@ -170,7 +170,7 @@ export function Hero({ campaignCount, top }: HeroProps) {
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <ButtonLink href="/campaigns" size="lg">
+            <ButtonLink href="/campaigns" prefetch={false} size="lg">
               سهیم می‌شوم
               <ArrowLeft className="size-4" aria-hidden />
             </ButtonLink>
@@ -238,6 +238,7 @@ export function Hero({ campaignCount, top }: HeroProps) {
                 <h2 className="mt-1.5 text-[0.95rem] leading-7 font-bold">
                   <Link
                     href={`/campaigns/${top.slug}`}
+                    prefetch={false}
                     className="transition-colors hover:text-accent"
                   >
                     {top.title}
@@ -269,7 +270,8 @@ export function Hero({ campaignCount, top }: HeroProps) {
 
                 <Link
                   href={`/campaigns/${top.slug}`}
-                  className="group mt-3.5 inline-flex items-center gap-1.5 text-[0.82rem] font-bold text-accent transition-colors hover:text-brand-soft"
+                  prefetch={false}
+                  className="group mt-3 inline-flex items-center gap-1.5 py-1 text-[0.82rem] font-bold text-accent transition-colors hover:text-brand-soft"
                 >
                   مشاهدهٔ حرکت
                   <ArrowLeft

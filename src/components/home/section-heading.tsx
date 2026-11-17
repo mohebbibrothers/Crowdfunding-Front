@@ -8,6 +8,7 @@ export function SectionHeading({
   description,
   align = "start",
   action,
+  actionPlacement = "side",
   className,
 }: {
   eyebrow?: string;
@@ -15,12 +16,15 @@ export function SectionHeading({
   description?: string;
   align?: "start" | "center";
   action?: ReactNode;
+  /** «side»: کنار متن در انتهای بلوک — «below»: ادامهٔ پاراگراف، راست‌چین */
+  actionPlacement?: "side" | "below";
   className?: string;
 }) {
   return (
     <div
       className={cn(
         "flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between",
+        actionPlacement === "below" && "sm:flex-col sm:items-stretch",
         align === "center" && "sm:flex-col sm:items-center sm:text-center",
         className,
       )}
@@ -43,8 +47,9 @@ export function SectionHeading({
             {description}
           </p>
         ) : null}
+        {action && actionPlacement === "below" ? <div className="mt-4 flex">{action}</div> : null}
       </div>
-      {action ? <div className="shrink-0">{action}</div> : null}
+      {action && actionPlacement !== "below" ? <div className="shrink-0">{action}</div> : null}
     </div>
   );
 }

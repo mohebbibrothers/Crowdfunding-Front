@@ -29,10 +29,12 @@ export function TransparencyBand() {
           eyebrow="چرا می‌توانی اعتماد کنی"
           title="شفافیت این‌جا سازوکار است، نه شعار"
           description="پرسش همیشگی خیرها همین است: «از کجا بدانم سهم من همان‌جا خرج شد؟» هم‌سهم به‌جای قول دادن، سه سازوکار فنی می‌گذارد کنارت."
+          actionPlacement="below"
           action={
             <Link
               href="/transparency"
-              className="inline-flex items-center gap-1.5 text-[0.86rem] font-bold text-accent transition-colors hover:text-brand-soft"
+              prefetch={false}
+              className="inline-flex items-center gap-1.5 py-1 text-[0.86rem] font-bold text-accent transition-colors hover:text-brand-soft"
             >
               دیوار شفافیت
               <ArrowLeft className="size-3.5" aria-hidden />

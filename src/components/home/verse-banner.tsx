@@ -60,8 +60,8 @@ export function VerseBanner() {
           شهریار
         </p>
 
-        <p className="mt-5 text-[0.82rem] text-muted">
-          هم‌سهم، سهمِ کوچکی از همان <span className="font-bold text-accent">خانهٔ کرم</span> است.
+        <p className="mt-5 text-[0.82rem] text-on-brand/80">
+          هم‌سهم، سهمِ کوچکی از همان <span className="font-bold text-gold-soft">خانهٔ کرم</span> است.
         </p>
       </div>
     </section>

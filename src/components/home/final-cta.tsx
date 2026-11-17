@@ -33,12 +33,13 @@ export function FinalCta() {
             </p>
 
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <ButtonLink href="/campaigns" variant="gold" size="lg">
+              <ButtonLink href="/campaigns" prefetch={false} variant="gold" size="lg">
                 سهیم می‌شوم
                 <ArrowLeft className="size-4" aria-hidden />
               </ButtonLink>
               <ButtonLink
                 href="/about#faq"
+                prefetch={false}
                 size="lg"
                 variant="secondary"
                 className="border-on-brand/25 bg-on-brand/10 text-on-brand hover:border-on-brand/50 hover:text-on-brand"

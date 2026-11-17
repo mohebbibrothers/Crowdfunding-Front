@@ -66,6 +66,7 @@ export function SiteHeader() {
               <Link
                 key={item.href}
                 href={item.href}
+                prefetch={false}
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "group relative rounded-pill px-3.5 py-2 text-[0.9rem] font-semibold transition-colors",
@@ -89,11 +90,17 @@ export function SiteHeader() {
           <ThemeToggle />
           <Link
             href="/auth/login"
+            prefetch={false}
             className="hidden rounded-pill px-3 py-2 text-[0.86rem] font-semibold text-ink-soft transition-colors hover:text-accent sm:inline-flex"
           >
             ورود
           </Link>
-          <ButtonLink href="/campaigns" size="sm" className="hidden md:inline-flex">
+          <ButtonLink
+            href="/campaigns"
+            prefetch={false}
+            size="sm"
+            className="hidden md:inline-flex"
+          >
             سهیم می‌شوم
             <ArrowLeft className="size-3.5" aria-hidden />
           </ButtonLink>
