@@ -1,6 +1,6 @@
 import { chromium } from "playwright-core";
 
-const BASE = process.env.BASE || "http://127.0.0.1:3039/";
+const BASE = process.env.BASE || "http://127.0.0.1:3047/";
 const b = await chromium.launch();
 
 /** صفحه را مثل کاربر واقعی پایین می‌برد تا همهٔ ورودها اجرا شوند. */

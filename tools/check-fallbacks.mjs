@@ -1,6 +1,6 @@
 import { chromium } from "playwright-core";
 const b = await chromium.launch();
-const URL = "http://127.0.0.1:3039/";
+const URL = "http://127.0.0.1:3047/";
 
 // ۱) کاهش حرکت
 {

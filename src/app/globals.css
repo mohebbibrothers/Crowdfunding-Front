@@ -371,14 +371,15 @@
   .arch-motif::before {
     content: "";
     position: absolute;
-    inset-inline: 50%;
+    left: 50%;
+    right: auto;
     top: -1px;
-    translate: -50% 0;
+    transform: translateX(-50%);
     width: min(92%, 34rem);
     aspect-ratio: 2 / 1;
-    border-start-start-radius: 999px;
-    border-start-end-radius: 999px;
-    border: 1px solid color-mix(in oklab, var(--on-brand) 16%, transparent);
+    border-top-left-radius: 999px;
+    border-top-right-radius: 999px;
+    border: 1px solid color-mix(in oklab, var(--gold) 28%, transparent);
     border-bottom: 0;
     pointer-events: none;
   }
@@ -711,5 +712,129 @@
   }
   html[data-motion="on"] [data-in] .signature-wipe {
     clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ── سطوحِ معکوس (فوتر و پنل پایانی) ────────────────────────────────────────
+   این دو بلوک پیش‌تر همیشه سبزِ تیره بودند و در تم روشن مثل یک جزیرهٔ جدا
+   دیده می‌شدند. حالا هر دو از یک مجموعهٔ نشانهٔ معنایی رنگ می‌گیرند که با
+   تم روشن/تاریک جابه‌جا می‌شود: روز = کاغذِ سبزآهنگ با متنِ تیره،
+   شب = زمردِ عمیق با متنِ روشن. */
+
+:root {
+  --inv-bg: #f2f6f1;
+  --inv-panel-bg: linear-gradient(150deg, #d5ebe0 0%, #f2f8f3 44%, #fbf0dd 100%);
+  --inv-panel-ring: color-mix(in oklab, var(--brand) 22%, transparent);
+  --inv-ink: #0e2318;
+  --inv-soft: #3a4f43;
+  --inv-muted: #5a6d62;
+  --inv-line: #d2ded6;
+  --inv-gold: #8a5a09;
+  --inv-hover: #06553c;
+  --inv-wash: color-mix(in oklab, var(--brand) 7%, transparent);
+  --inv-glow: color-mix(in oklab, var(--gold) 13%, transparent);
+}
+
+.dark {
+  --inv-bg: #071c16;
+  --inv-panel-bg: linear-gradient(152deg, #0d3125 0%, #0a2419 52%, #143020 100%);
+  --inv-panel-ring: color-mix(in oklab, var(--gold) 22%, transparent);
+  --inv-ink: #e8f4ed;
+  --inv-soft: #c3d6c9;
+  --inv-muted: #9db8ac;
+  --inv-line: #1c3a2e;
+  --inv-gold: #efb45c;
+  --inv-hover: #f6cc8a;
+  --inv-wash: color-mix(in oklab, var(--brand) 18%, transparent);
+  --inv-glow: color-mix(in oklab, var(--gold) 15%, transparent);
+}
+
+@layer components {
+  .inv-surface {
+    background-color: var(--inv-bg);
+    color: var(--inv-ink);
+  }
+
+  /* پنل پایانی یک پله روشن‌تر از فوتر است تا «کارت» خوانده شود، نه ادامهٔ آن */
+  .inv-panel {
+    background-color: var(--inv-bg);
+    background-image: var(--inv-panel-bg);
+    color: var(--inv-ink);
+    box-shadow:
+      inset 0 1px 0 0 color-mix(in oklab, #fff 40%, transparent),
+      0 24px 60px -34px color-mix(in oklab, var(--brand) 45%, transparent);
+  }
+  .dark .inv-panel {
+    box-shadow:
+      inset 0 1px 0 0 color-mix(in oklab, #fff 6%, transparent),
+      0 24px 60px -34px #000;
+  }
+
+  /* لایهٔ نور: از بالای بلوک، یک شست‌وشوی نرم */
+  .inv-veil {
+    background:
+      radial-gradient(56% 46% at 92% -8%, var(--inv-glow), transparent 62%),
+      linear-gradient(180deg, var(--inv-wash) 0%, transparent 28%);
+  }
+
+  .inv-soft {
+    color: var(--inv-soft);
+  }
+  .inv-muted {
+    color: var(--inv-muted);
+  }
+  .inv-gold {
+    color: var(--inv-gold);
+  }
+  .inv-rule {
+    border-color: var(--inv-line);
+  }
+  .inv-rule-strong {
+    border-color: color-mix(in oklab, var(--inv-line) 85%, var(--inv-ink));
+  }
+
+  .inv-link {
+    color: var(--inv-soft);
+    transition: color 260ms var(--ease-out-soft);
+  }
+  .inv-link:hover,
+  .inv-link:focus-visible {
+    color: var(--inv-hover);
+  }
+
+  .inv-pill {
+    border: 1px solid var(--inv-line);
+    color: var(--inv-soft);
+    background-color: transparent;
+    transition:
+      border-color 260ms var(--ease-out-soft),
+      color 260ms var(--ease-out-soft),
+      background-color 260ms var(--ease-out-soft);
+  }
+  .inv-pill:hover,
+  .inv-pill:focus-visible {
+    border-color: color-mix(in oklab, var(--inv-gold) 55%, var(--inv-line));
+    color: var(--inv-gold);
+  }
+
+  /* امضای خوشنویسی: در روز نسخهٔ رنگی، در شب نسخهٔ سپید */
+  .brand-sig {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+  .brand-sig-h {
+    background-image: url("/brand/lockup-h-brand.svg");
+    aspect-ratio: 3348 / 1494;
+  }
+  .brand-sig-v {
+    background-image: url("/brand/lockup-v-brand.svg");
+    aspect-ratio: 728 / 1456;
+  }
+  .dark .brand-sig-h {
+    background-image: url("/brand/lockup-h-white.svg");
+  }
+  .dark .brand-sig-v {
+    background-image: url("/brand/lockup-v-white.svg");
   }
 }

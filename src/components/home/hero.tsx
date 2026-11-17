@@ -265,7 +265,7 @@ export function Hero({ campaignCount, top }: HeroProps) {
               </div>
 
               {hasLive ? (
-                <div className="mt-5 rounded-2xl border border-line bg-paper p-4">
+                <div className="mt-5 border-t border-line pt-4">
                   <p className="flex items-center gap-1.5 text-[0.7rem] font-semibold text-muted">
                     {top.benefactor.name}
                     {top.benefactor.is_verified ? (

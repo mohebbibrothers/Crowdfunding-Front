@@ -5,38 +5,47 @@ import { Reveal } from "@/components/motion/reveal";
 import { Words } from "@/components/motion/words";
 import { ButtonLink } from "@/components/ui/button";
 
+/**
+ * پنل پایانی — همان زبانِ بصریِ فوتر، ولی با فاصلهٔ روشن‌تر از کاغذ.
+ * رنگ‌ها از نشانه‌های «سطح معکوس» می‌آیند تا در تم روز کاغذِ سبزآهنگ و در
+ * تم شب زمردِ عمیق باشد؛ دیگر یک جزیرهٔ سبزِ ثابت نیست.
+ */
 export function FinalCta() {
   return (
     <section className="pb-4">
       <div className="shell">
-        <div className="arch-motif relative isolate overflow-hidden rounded-[2.25rem] bg-brand-deep px-6 py-16 text-center text-on-brand sm:px-12 lg:py-20">
-          {/* هالهٔ کهربایی + شبکهٔ نقطه‌ای */}
+        <div className="inv-surface arch-motif inv-rule relative isolate overflow-hidden rounded-[2.25rem] border px-6 py-16 text-center sm:px-12 lg:py-20">
+          {/* شست‌وشوی نور کهربایی + شبکهٔ نقطه‌ای */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 opacity-90"
+            className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "radial-gradient(58% 62% at 50% 8%, color-mix(in oklab, var(--gold) 26%, transparent), transparent 68%)",
+                "radial-gradient(52% 50% at 50% 0%, var(--inv-glow), transparent 64%), linear-gradient(180deg, var(--inv-wash) 0%, transparent 46%)",
             }}
           />
-          <div aria-hidden className="dot-grid pointer-events-none absolute inset-0 opacity-20" />
+          <div
+            aria-hidden
+            className="dot-grid pointer-events-none absolute inset-0 opacity-[0.14]"
+          />
+
           <Reveal
             variant="fade"
             className="pointer-events-none absolute start-8 top-1/2 hidden -translate-y-1/2 lg:block"
           >
-            <BrandSignatureV className="signature-wipe h-40 opacity-[0.12]" />
+            <BrandSignatureV className="signature-wipe h-40 opacity-[0.14]" />
           </Reveal>
 
           <Reveal variant="fade" className="relative mx-auto max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-pill border border-on-brand/25 px-3.5 py-1.5 text-[0.72rem] font-bold text-on-brand/80">
+            <span className="inv-pill inline-flex items-center gap-2 rounded-pill px-3.5 py-1.5 text-[0.72rem] font-bold">
               <ShieldCheck className="size-3.5 text-gold" aria-hidden />
               پرداخت در درگاه رسمی، همراه با رسید
             </span>
 
-            <h2 className="display-2 mt-6 text-on-brand">
+            <h2 className="display-2 mt-6">
               <Words text="امروز یک سهم بردار، فردا یک زندگی" delay={80} step={70} />
             </h2>
-            <p className="mx-auto mt-5 max-w-xl text-[0.97rem] leading-8 text-on-brand/80">
+            <p className="inv-soft mx-auto mt-5 max-w-xl text-[0.97rem] leading-8">
               لازم نیست مبلغ بزرگی کنار بگذاری. همین که یک سهم برداری، حرکت یک قدم جلو می‌رود و کسی
               که منتظر است، یک روز زودتر به نتیجه می‌رسد.
             </p>
@@ -51,7 +60,7 @@ export function FinalCta() {
                 prefetch={false}
                 size="lg"
                 variant="secondary"
-                className="border-on-brand/25 bg-on-brand/10 text-on-brand hover:border-on-brand/50 hover:text-on-brand"
+                className="inv-pill border bg-transparent shadow-none hover:text-[color:var(--inv-gold)]"
               >
                 پرسش‌های پرتکرار
               </ButtonLink>

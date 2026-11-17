@@ -51,17 +51,17 @@ export function BrandLockup({ className }: { className?: string }) {
   );
 }
 
-/** خوشنویسی افقی رسمی — برای سطوح تیره و اندازهٔ بزرگ. */
+/**
+ * خوشنویسی افقی رسمی — رنگش با تم عوض می‌شود (سبزِ برند در روز، سپید در شب).
+ * به‌جای `<img>` از پس‌زمینهٔ CSS استفاده می‌کنیم تا در یک صفحه دو نسخه
+ * دانلود نشود؛ اندازه از طریق `aspect-ratio` و ارتفاعِ کلاس می‌آید.
+ */
 export function BrandSignatureH({ className }: { className?: string }) {
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src="/brand/lockup-h-white.svg"
-      alt=""
+    <span
       aria-hidden
-      width={3348}
-      height={1494}
-      className={cn("block h-14 w-auto", className)}
+      className={cn("brand-sig brand-sig-h block", className)}
+      style={{ backgroundSize: "contain" }}
     />
   );
 }
@@ -69,14 +69,10 @@ export function BrandSignatureH({ className }: { className?: string }) {
 /** خوشنویسی عمودی رسمی — مهر/امضا در حاشیهٔ پنل‌ها. */
 export function BrandSignatureV({ className }: { className?: string }) {
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src="/brand/lockup-v-white.svg"
-      alt=""
+    <span
       aria-hidden
-      width={728}
-      height={1456}
-      className={cn("block h-16 w-auto", className)}
+      className={cn("brand-sig brand-sig-v block", className)}
+      style={{ backgroundSize: "contain" }}
     />
   );
 }
