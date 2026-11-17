@@ -1,4 +1,5 @@
 import { chromium } from "playwright-core";
+import { mkdirSync } from "node:fs";
 
 const BASE = process.env.BASE || "http://127.0.0.1:3047/";
 const b = await chromium.launch();
@@ -28,7 +29,7 @@ for (const [w, h, tag] of [
   for (let y = 0; y < total; y += h) {
     await p.evaluate((top) => window.scrollTo({ top, behavior: "instant" }), y);
     await p.waitForTimeout(420);
-    await p.screenshot({ path: `/home/user/w-${tag}${i++}.png` });
+    await p.screenshot({ path: `${OUT}${tag}-${i++}.png` });
   }
   console.log(tag, "slices:", i, "height:", total);
   await ctx.close();
