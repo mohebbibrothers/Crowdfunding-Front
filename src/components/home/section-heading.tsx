@@ -1,5 +1,8 @@
 import type { ReactNode } from "react";
 
+import { Reveal } from "@/components/motion/reveal";
+import { Words } from "@/components/motion/words";
+
 import { cn } from "@/lib/utils/cn";
 
 export function SectionHeading({
@@ -21,7 +24,8 @@ export function SectionHeading({
   className?: string;
 }) {
   return (
-    <div
+    <Reveal
+      variant="fade"
       className={cn(
         "flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between",
         actionPlacement === "below" && "sm:flex-col sm:items-stretch",
@@ -36,7 +40,9 @@ export function SectionHeading({
             {eyebrow}
           </p>
         ) : null}
-        <h2 className="display-2">{title}</h2>
+        <h2 className="display-2">
+          <Words text={title} delay={60} />
+        </h2>
         {description ? (
           <p
             className={cn(
@@ -50,6 +56,6 @@ export function SectionHeading({
         {action && actionPlacement === "below" ? <div className="mt-4 flex">{action}</div> : null}
       </div>
       {action && actionPlacement !== "below" ? <div className="shrink-0">{action}</div> : null}
-    </div>
+    </Reveal>
   );
 }

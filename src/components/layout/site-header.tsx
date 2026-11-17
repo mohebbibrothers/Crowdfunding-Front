@@ -50,11 +50,16 @@ export function SiteHeader() {
         پرش به محتوای اصلی
       </a>
 
-      <div className="shell flex h-20 items-center justify-between gap-3 lg:h-[5.5rem]">
+      <div
+        className={cn(
+          "shell flex items-center justify-between gap-3 transition-[height] duration-500 ease-out-soft",
+          scrolled ? "h-16 lg:h-18" : "h-20 lg:h-[5.5rem]",
+        )}
+      >
         <Link
           href="/"
           aria-label={`${site.organisation} — ${site.name}`}
-          className="shrink-0 rounded-xl transition-opacity hover:opacity-90"
+          className="group shrink-0 rounded-xl transition-transform duration-500 ease-out-soft hover:scale-[1.02]"
         >
           <BrandLockup />
         </Link>

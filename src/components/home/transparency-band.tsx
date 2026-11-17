@@ -2,6 +2,7 @@ import { ArrowLeft, Fingerprint, GitCompareArrows, Lock } from "lucide-react";
 import Link from "next/link";
 
 import { SectionHeading } from "@/components/home/section-heading";
+import { Reveal } from "@/components/motion/reveal";
 
 const pillars = [
   {
@@ -42,10 +43,12 @@ export function TransparencyBand() {
           }
         />
 
-        <div className="panel reveal mt-10 grid overflow-hidden md:grid-cols-3">
+        <div className="panel mt-10 grid overflow-hidden md:grid-cols-3">
           {pillars.map((pillar, index) => (
-            <div
+            <Reveal
               key={pillar.title}
+              variant="up"
+              delay={120 + index * 130}
               className={
                 index < pillars.length - 1
                   ? "border-b border-line p-7 md:border-e md:border-b-0 md:last:border-e-0 lg:p-8"
@@ -57,7 +60,7 @@ export function TransparencyBand() {
               </span>
               <h3 className="mt-5 text-[1rem] font-bold text-ink">{pillar.title}</h3>
               <p className="mt-2 text-[0.87rem] leading-7 text-muted">{pillar.body}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

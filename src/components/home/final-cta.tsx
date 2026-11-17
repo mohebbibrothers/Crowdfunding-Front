@@ -1,6 +1,8 @@
 import { ArrowLeft, ShieldCheck } from "lucide-react";
 
 import { BrandSignatureV } from "@/components/brand/logo";
+import { Reveal } from "@/components/motion/reveal";
+import { Words } from "@/components/motion/words";
 import { ButtonLink } from "@/components/ui/button";
 
 export function FinalCta() {
@@ -18,15 +20,22 @@ export function FinalCta() {
             }}
           />
           <div aria-hidden className="dot-grid pointer-events-none absolute inset-0 opacity-20" />
-          <BrandSignatureV className="pointer-events-none absolute start-8 top-1/2 hidden h-40 -translate-y-1/2 opacity-[0.12] lg:block" />
+          <Reveal
+            variant="fade"
+            className="pointer-events-none absolute start-8 top-1/2 hidden -translate-y-1/2 lg:block"
+          >
+            <BrandSignatureV className="signature-wipe h-40 opacity-[0.12]" />
+          </Reveal>
 
-          <div className="relative mx-auto max-w-2xl">
+          <Reveal variant="fade" className="relative mx-auto max-w-2xl">
             <span className="inline-flex items-center gap-2 rounded-pill border border-on-brand/25 px-3.5 py-1.5 text-[0.72rem] font-bold text-on-brand/80">
               <ShieldCheck className="size-3.5 text-gold" aria-hidden />
               پرداخت در درگاه رسمی، همراه با رسید
             </span>
 
-            <h2 className="display-2 mt-6 text-on-brand">امروز یک سهم بردار، فردا یک زندگی</h2>
+            <h2 className="display-2 mt-6 text-on-brand">
+              <Words text="امروز یک سهم بردار، فردا یک زندگی" delay={80} step={70} />
+            </h2>
             <p className="mx-auto mt-5 max-w-xl text-[0.97rem] leading-8 text-on-brand/80">
               لازم نیست مبلغ بزرگی کنار بگذاری. همین که یک سهم برداری، حرکت یک قدم جلو می‌رود و کسی
               که منتظر است، یک روز زودتر به نتیجه می‌رسد.
@@ -47,7 +56,7 @@ export function FinalCta() {
                 پرسش‌های پرتکرار
               </ButtonLink>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

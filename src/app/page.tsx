@@ -6,6 +6,7 @@ import { CampaignCard, CampaignCardSkeleton } from "@/components/home/campaign-c
 import { FinalCta } from "@/components/home/final-cta";
 import { Hero } from "@/components/home/hero";
 import { HowItWorks } from "@/components/home/how-it-works";
+import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/home/section-heading";
 import { TransparencyBand } from "@/components/home/transparency-band";
 import { VerseBanner } from "@/components/home/verse-banner";
@@ -68,10 +69,16 @@ export default async function HomePage() {
 
         {featured.length > 0 ? (
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {featured.map((campaign) => (
-              <CampaignCard key={campaign.id} campaign={campaign} />
+            {featured.map((campaign, index) => (
+              <Reveal key={campaign.id} variant="up" delay={index * 110} className="h-full min-w-0">
+                <CampaignCard campaign={campaign} />
+              </Reveal>
             ))}
-            {featured.length < 3 ? <AllCampaignsTile count={campaigns.count} /> : null}
+            {featured.length < 3 ? (
+              <Reveal variant="up" delay={featured.length * 110} className="h-full min-w-0">
+                <AllCampaignsTile count={campaigns.count} />
+              </Reveal>
+            ) : null}
           </div>
         ) : campaigns.ok ? (
           <div className="mt-10 flex flex-col items-center justify-center rounded-card border border-dashed border-line-strong bg-surface px-6 py-16 text-center">
@@ -85,9 +92,15 @@ export default async function HomePage() {
           </div>
         ) : (
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <CampaignCardSkeleton />
-            <CampaignCardSkeleton />
-            <CampaignCardSkeleton />
+            <Reveal variant="up" delay={0}>
+              <CampaignCardSkeleton />
+            </Reveal>
+            <Reveal variant="up" delay={110}>
+              <CampaignCardSkeleton />
+            </Reveal>
+            <Reveal variant="up" delay={220}>
+              <CampaignCardSkeleton />
+            </Reveal>
           </div>
         )}
       </section>

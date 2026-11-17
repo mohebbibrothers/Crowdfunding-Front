@@ -91,7 +91,7 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
   const isFunded = remaining_shares === 0 || status === "funded" || status === "completed";
 
   return (
-    <article className="card card-lift reveal group flex h-full flex-col overflow-hidden">
+    <article className="card card-lift glow-card group flex h-full flex-col overflow-hidden">
       <Link
         href={`/campaigns/${slug}`}
         prefetch={false}

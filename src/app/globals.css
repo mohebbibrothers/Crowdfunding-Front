@@ -392,17 +392,6 @@
     font-variant-numeric: tabular-nums;
     font-feature-settings: "ss01" 1;
   }
-
-  /* ── ورود نرم بخش‌ها هنگام اسکرول (فقط جایی که پشتیبانی می‌شود) ────────── */
-  @supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .reveal {
-        animation: cf-rise 1ms var(--ease-out-soft) both;
-        animation-timeline: view();
-        animation-range: entry 8% cover 26%;
-      }
-    }
-  }
 }
 
 @layer components {
@@ -469,5 +458,258 @@
     55% {
       box-shadow: 0 0 0 5px color-mix(in oklab, var(--gold) 0%, transparent);
     }
+  }
+}
+
+/* ── سامانهٔ حرکت ────────────────────────────────────────────────────────────
+   همهٔ پویانمایی‌ها بر پایهٔ transform/opacity هستند و فقط وقتی فعال می‌شوند
+   که اسکریپتِ درون‌خطیِ layout، `data-motion="on"` را روی html گذاشته باشد
+   (یعنی مرورگر IntersectionObserver دارد و کاربر «کاهش حرکت» نخواسته).
+   نتیجه: با جاوااسکریپت خاموش یا prefers-reduced-motion، هیچ محتوایی پنهان
+   نمی‌ماند. */
+
+@layer components {
+  html[data-motion="on"] {
+    scroll-behavior: smooth;
+  }
+
+  /* ── ورود نرمِ عناصر ──────────────────────────────────────────────── */
+  html[data-motion="on"] [data-reveal] {
+    opacity: 0;
+    will-change: opacity, transform;
+  }
+  html[data-motion="on"] [data-reveal="up"] {
+    transform: translate3d(0, 22px, 0);
+  }
+  html[data-motion="on"] [data-reveal="scale"] {
+    transform: scale(0.965);
+  }
+  html[data-motion="on"] [data-reveal="start"] {
+    transform: translate3d(26px, 0, 0);
+  }
+  html[data-motion="on"] [data-reveal="end"] {
+    transform: translate3d(-26px, 0, 0);
+  }
+  html[data-motion="on"] [data-reveal][data-in] {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+    transition:
+      opacity 620ms var(--ease-out-soft) var(--d, 0ms),
+      transform 780ms var(--ease-out-soft) var(--d, 0ms);
+  }
+
+  /* ── واژه‌های تیتر ────────────────────────────────────────────────── */
+  .word {
+    display: inline-block;
+  }
+  html[data-motion="on"] .word {
+    opacity: 0;
+  }
+  html[data-motion="on"] [data-in] .word {
+    animation: cf-word-rise 760ms var(--ease-out-soft) both;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes cf-word-rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 0.55em, 0);
+      filter: blur(3px);
+    }
+    60% {
+      opacity: 1;
+    }
+    to {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+  }
+
+  /* ── کشیدنِ خط (قوس، حاشیه، قلمِ زیر واژه) ───────────────────────── */
+  html[data-motion="on"] .draw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  html[data-motion="on"] [data-in] .draw {
+    animation: cf-draw 1500ms var(--ease-in-out-soft) both;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes cf-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* ── دکمه‌ها: درخششِ عبوری هنگام هاور ─────────────────────────────── */
+  .sheen {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      105deg,
+      transparent 34%,
+      color-mix(in oklab, #fff 42%, transparent) 48%,
+      transparent 62%
+    );
+    transform: translateX(-120%);
+    transition: transform 900ms var(--ease-out-soft);
+  }
+  .sheen:hover::after,
+  .sheen:focus-visible::after {
+    transform: translateX(120%);
+  }
+
+  /* ── شناوری آرام ──────────────────────────────────────────────────── */
+  @media (prefers-reduced-motion: no-preference) {
+    .float-soft {
+      animation: cf-float 8s var(--ease-in-out-soft) infinite;
+    }
+  }
+  @keyframes cf-float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, -7px, 0);
+    }
+  }
+
+  /* ── کج‌شدن سه‌بعدیِ میز سهم ─────────────────────────────────────── */
+  .tilt-shell {
+    transition: transform 620ms var(--ease-out-soft);
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .tilt-shell.is-tilting {
+    transition: transform 120ms linear;
+  }
+
+  /* ── هالهٔ روانِ زیر نشانگر روی کارت‌ها ───────────────────────────── */
+  .glow-card {
+    position: relative;
+  }
+  .glow-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 420ms var(--ease-out-soft);
+    background: radial-gradient(
+      260px circle at var(--mx, 50%) var(--my, 30%),
+      color-mix(in oklab, var(--gold) 16%, transparent),
+      transparent 68%
+    );
+  }
+  .glow-card:hover::after {
+    opacity: 1;
+  }
+
+  /* ── نوار پیشرفت: پر شدن هنگام دید ───────────────────────────────── */
+  html[data-motion="on"] [data-in] .fill-in {
+    animation: cf-progress-in 1100ms var(--ease-out-soft) both;
+    animation-delay: 140ms;
+  }
+}
+
+@layer components {
+  /* خط‌های راهنما که هنگام دید کشیده می‌شوند */
+  html[data-motion="on"] .rule-grow {
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 900ms var(--ease-out-soft) 240ms;
+  }
+  html[data-motion="on"] [data-in] .rule-grow,
+  html[data-motion="on"] .rule-grow[data-in] {
+    transform: none;
+  }
+
+  /* جاروی نور روی موزاییک سهم، یک‌بار پس از نشستن خانه‌ها */
+  .mosaic-sweep {
+    background: linear-gradient(
+      180deg,
+      transparent 20%,
+      color-mix(in oklab, #fff 62%, transparent) 50%,
+      transparent 80%
+    );
+    opacity: 0;
+    transform: translateY(-120%);
+  }
+  html[data-motion="on"] [data-in] .mosaic-sweep {
+    animation: cf-mosaic-sweep 1700ms var(--ease-in-out-soft) 620ms both;
+  }
+  @keyframes cf-mosaic-sweep {
+    0% {
+      opacity: 0;
+      transform: translateY(-120%);
+    }
+    22% {
+      opacity: 0.55;
+    }
+    70% {
+      opacity: 0.12;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(120%);
+    }
+  }
+}
+
+@layer components {
+  /* شمسه: چرخشِ آرام و بی‌پایان */
+  @media (prefers-reduced-motion: no-preference) {
+    .shamse-star {
+      transform-origin: 110px 110px;
+      animation: cf-spin 120s linear infinite;
+    }
+  }
+  @keyframes cf-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+@layer components {
+  /* ── خانه‌های موزاییک: ورودِ آبشاری از مرکز + موجِ نور هنگام هاور ─── */
+  .tile {
+    animation: cf-tile-in 520ms var(--ease-out-soft) var(--td, 0ms) both;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html[data-motion="on"] .mosaic:hover .tile {
+      animation: cf-tile-wave 900ms var(--ease-in-out-soft) var(--td, 0ms) both;
+    }
+  }
+  @keyframes cf-tile-wave {
+    0%,
+    100% {
+      transform: scale(1);
+      filter: none;
+    }
+    45% {
+      transform: scale(1.14);
+      filter: brightness(1.12);
+    }
+  }
+
+  /* ── امضای خوشنویسی: پرده‌برداری از راست به چپ هنگام دید ──────────── */
+  html[data-motion="on"] .signature-wipe {
+    clip-path: inset(0 0 0 100%);
+    transition: clip-path 1400ms var(--ease-out-soft) 120ms;
+  }
+  html[data-motion="on"] [data-in] .signature-wipe {
+    clip-path: inset(0 0 0 0);
   }
 }

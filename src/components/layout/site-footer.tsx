@@ -2,6 +2,7 @@ import { ArrowUp, AtSign, Mail, Send, Video } from "lucide-react";
 import Link from "next/link";
 
 import { BrandSignatureH } from "@/components/brand/logo";
+import { Reveal } from "@/components/motion/reveal";
 import { brand } from "@/lib/config/brand";
 import { site } from "@/lib/config/site";
 
@@ -30,8 +31,8 @@ export function SiteFooter() {
       <div className="shell relative">
         {/* ── بخش بالا: امضا + ستون‌های لینک ───────────────────────────── */}
         <div className="grid gap-12 py-14 lg:grid-cols-[1.15fr_1.35fr] lg:gap-16 lg:py-16">
-          <div className="max-w-md">
-            <BrandSignatureH className="h-20 opacity-95" />
+          <Reveal variant="up" className="max-w-md">
+            <BrandSignatureH className="signature-wipe h-20 opacity-95" />
             <p className="mt-7 text-[0.95rem] leading-8 text-on-brand/75">
               {site.name} سامانهٔ سهم‌محور {site.organisation} است: هر حرکت خیر به سهم‌های روشن تقسیم
               می‌شود تا مشارکت، ساده، قابل پیگیری و قابل اثبات باشد.
@@ -63,12 +64,15 @@ export function SiteFooter() {
                 </span>
               </Link>
             </div>
-          </div>
+          </Reveal>
 
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
             {site.footer.groups.map((group, groupIndex) => (
-              <nav
+              <Reveal
+                as="nav"
                 key={group.title}
+                variant="up"
+                delay={groupIndex * 110}
                 aria-label={group.title}
                 className={
                   groupIndex === site.footer.groups.length - 1
@@ -96,7 +100,7 @@ export function SiteFooter() {
                     </li>
                   ))}
                 </ul>
-              </nav>
+              </Reveal>
             ))}
           </div>
         </div>
