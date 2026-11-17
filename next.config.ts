@@ -51,6 +51,23 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        /**
+         * HTML هرگز یک سال «کهنه» نماند.
+         * چرا: Next برای صفحهٔ پیش‌ساخته `stale-while-revalidate` بسیار بلند
+         * می‌فرستد؛ هر کش میانی (Apache/CDN) می‌تواند نسخهٔ بیلد قبلی را نگه دارد
+         * و آن نسخه به دارایی‌های حذف‌شده اشاره کند → صفحهٔ بی‌استایل.
+         * این‌جا پنجرهٔ کهنگی به ۶۰ ثانیه محدود می‌شود. دارایی‌های
+         * `/_next/static/*` عمداً دست‌نخورده‌اند (immutable یک‌ساله).
+         */
+        source: "/",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=0, s-maxage=60, stale-while-revalidate=60",
+          },
+        ],
+      },
+      {
         source: "/:path*",
         headers: [
           { key: "X-Content-Type-Options", value: "nosniff" },

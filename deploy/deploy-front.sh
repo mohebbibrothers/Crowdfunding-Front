@@ -59,6 +59,16 @@ NEXT_PUBLIC_SITE_URL=https://alavi-fars.ir
 ENV
 fi
 
+# دارایی‌های ثابتِ بیلد قبلی را نگه می‌داریم (merge، نه جای‌گزینی).
+# چرا: HTMLای که یک کش میانی یا مرورگر در دست دارد به نام‌های هش‌دارِ
+# همان بیلد اشاره می‌کند؛ اگر پاک شوند، صفحهٔ کاربر بی‌استایل و بی‌جاوااسکریپت
+# می‌شود. فایل‌های قدیمی‌تر از ۳۰ روز هرس می‌شوند تا دیسک باد نکند.
+if [ -d "$APP_DIR/runtime/.next/static" ]; then
+  cp -a "$APP_DIR/runtime/.next/static/." "$APP_DIR/runtime.new/.next/static/" 2>/dev/null || true
+  find "$APP_DIR/runtime.new/.next/static" -type f -mtime +30 -delete 2>/dev/null || true
+  echo "دارایی‌های بیلد قبلی نگه داشته شد."
+fi
+
 rm -rf "$APP_DIR/runtime"
 mv "$APP_DIR/runtime.new" "$APP_DIR/runtime"
 echo "حجم runtime: $(du -sh "$APP_DIR/runtime" | cut -f1)"
