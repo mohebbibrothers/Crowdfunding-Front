@@ -1,7 +1,7 @@
 import { ArrowUp, AtSign, Mail, Send, Video } from "lucide-react";
 import Link from "next/link";
 
-import { BrandMark, BrandSignatureH, BrandSignatureV } from "@/components/brand/logo";
+import { BrandSignatureH } from "@/components/brand/logo";
 import { brand } from "@/lib/config/brand";
 import { site } from "@/lib/config/site";
 
@@ -29,9 +29,9 @@ export function SiteFooter() {
 
       <div className="shell relative">
         {/* ── بخش بالا: امضا + ستون‌های لینک ───────────────────────────── */}
-        <div className="grid gap-14 py-16 lg:grid-cols-[1.15fr_1.35fr] lg:gap-16 lg:py-20">
+        <div className="grid gap-12 py-14 lg:grid-cols-[1.15fr_1.35fr] lg:gap-16 lg:py-16">
           <div className="max-w-md">
-            <BrandSignatureH className="h-16 opacity-95" />
+            <BrandSignatureH className="h-20 opacity-95" />
             <p className="mt-7 text-[0.95rem] leading-8 text-on-brand/75">
               {site.name} سامانهٔ سهم‌محور {site.organisation} است: هر حرکت خیر به سهم‌های روشن تقسیم
               می‌شود تا مشارکت، ساده، قابل پیگیری و قابل اثبات باشد.
@@ -100,17 +100,12 @@ export function SiteFooter() {
         </div>
 
         {/* ── نوار میانی: مهر برند + جملهٔ پایانی ───────────────────────── */}
-        <div className="flex flex-wrap items-center justify-between gap-6 border-t border-on-brand/12 py-8">
-          <div className="flex items-center gap-3.5">
-            <BrandMark className="h-9 text-gold" />
-            <p className="text-[0.82rem] leading-6 text-on-brand/60">
-              {site.organisation} — نهادی عام‌المنفعه، با مجوز رسمی
-              <br className="hidden sm:block" />
-              <span className="text-on-brand/45"> {site.promise}</span>
-            </p>
-          </div>
-
-          <BrandSignatureV className="hidden h-16 opacity-30 sm:block" />
+        <div className="flex flex-wrap items-center justify-between gap-6 border-t border-on-brand/12 py-7">
+          <p className="max-w-xs text-[0.82rem] leading-6 text-on-brand/60">
+            {site.organisation} — نهادی عام‌المنفعه، با مجوز رسمی
+            <br className="hidden sm:block" />
+            <span className="text-on-brand/45"> {site.promise}</span>
+          </p>
 
           <Link
             href="#main"

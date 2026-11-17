@@ -34,7 +34,7 @@ export function FinalCta() {
 
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <ButtonLink href="/campaigns" variant="gold" size="lg">
-                حرکت‌ها را ببین
+                سهیم می‌شوم
                 <ArrowLeft className="size-4" aria-hidden />
               </ButtonLink>
               <ButtonLink

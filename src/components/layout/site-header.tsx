@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Menu, Search, X } from "lucide-react";
+import { ArrowLeft, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -86,13 +86,6 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link
-            href="/campaigns"
-            aria-label="جست‌وجوی حرکت‌ها"
-            className="hidden size-10 items-center justify-center rounded-pill border border-line text-ink-soft transition-colors hover:border-brand-soft hover:text-accent md:inline-flex"
-          >
-            <Search className="size-[1.05rem]" aria-hidden />
-          </Link>
           <ThemeToggle />
           <Link
             href="/auth/login"
@@ -148,7 +141,7 @@ export function SiteHeader() {
               className="w-full"
               onClick={() => setOpen(false)}
             >
-              حرکت‌ها را ببین و سهیم شو
+              سهیم می‌شوم
             </ButtonLink>
             <ButtonLink
               href="/auth/login"

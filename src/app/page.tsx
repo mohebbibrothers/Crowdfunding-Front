@@ -8,6 +8,7 @@ import { Hero } from "@/components/home/hero";
 import { HowItWorks } from "@/components/home/how-it-works";
 import { SectionHeading } from "@/components/home/section-heading";
 import { TransparencyBand } from "@/components/home/transparency-band";
+import { VerseBanner } from "@/components/home/verse-banner";
 import { getPlatform, listCampaigns } from "@/lib/api/public";
 import { env } from "@/lib/config/env";
 import { site } from "@/lib/config/site";
@@ -43,6 +44,8 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+
+      <VerseBanner />
 
       <Hero campaignCount={campaigns.count} top={top} />
 

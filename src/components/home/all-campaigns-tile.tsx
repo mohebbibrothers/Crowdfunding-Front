@@ -18,7 +18,7 @@ export function AllCampaignsTile({ count }: { count: number }) {
       </span>
 
       <div className="my-auto py-6">
-        <h3 className="text-[1.05rem] font-bold text-ink">همهٔ حرکت‌های در جریان</h3>
+        <h3 className="text-[1.05rem] font-bold text-ink">فهرست حرکت‌های در جریان</h3>
         <p className="mt-2 text-[0.86rem] leading-7 text-muted">
           فهرست کامل، با فیلتر دسته، استان و فوریت — تا حرکتی را پیدا کنی که به آن نزدیک‌تری.
         </p>

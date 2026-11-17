@@ -41,6 +41,7 @@ function ShareMosaic({ filledPercent }: { filledPercent: number }) {
               }}
               className={cn(
                 "aspect-square min-w-0 animate-tile-in rounded-[5px]",
+                isNext && "next-share",
                 isFilled
                   ? index % 9 === 0
                     ? "bg-gold-soft"
@@ -170,7 +171,7 @@ export function Hero({ campaignCount, top }: HeroProps) {
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
             <ButtonLink href="/campaigns" size="lg">
-              حرکت‌ها را ببین و سهیم شو
+              سهیم می‌شوم
               <ArrowLeft className="size-4" aria-hidden />
             </ButtonLink>
             <ButtonLink href="#how" variant="secondary" size="lg">
@@ -268,10 +269,13 @@ export function Hero({ campaignCount, top }: HeroProps) {
 
                 <Link
                   href={`/campaigns/${top.slug}`}
-                  className="mt-3.5 inline-flex w-full items-center justify-center gap-2 rounded-pill bg-brand px-4 py-2.5 text-[0.84rem] font-bold text-on-brand transition-colors hover:bg-brand-soft"
+                  className="group mt-3.5 inline-flex items-center gap-1.5 text-[0.82rem] font-bold text-accent transition-colors hover:text-brand-soft"
                 >
-                  سهم بردار
-                  <ArrowLeft className="size-3.5" aria-hidden />
+                  مشاهدهٔ حرکت
+                  <ArrowLeft
+                    className="size-3.5 transition-transform duration-300 ease-out-soft group-hover:-translate-x-1"
+                    aria-hidden
+                  />
                 </Link>
               </div>
             ) : (

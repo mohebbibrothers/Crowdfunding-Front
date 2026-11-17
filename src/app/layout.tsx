@@ -76,7 +76,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="flex min-h-full flex-col bg-paper text-ink antialiased">
+      <body className="grain flex min-h-full flex-col bg-paper text-ink antialiased">
         <SiteHeader />
         <main id="main" className="flex-1">
           {children}
