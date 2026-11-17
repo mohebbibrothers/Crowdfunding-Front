@@ -10,7 +10,7 @@ const socialIcons = { instagram: AtSign, telegram: Send, aparat: Video } as cons
 
 export function SiteFooter() {
   return (
-    <footer className="inv-surface relative mt-24 overflow-hidden border-t inv-rule">
+    <footer className="inv-surface inv-rule relative mt-24 overflow-hidden border-t">
       {/* شست‌وشوی نور + شبکهٔ نقطه‌ای — هر دو از پالتِ تم */}
       <div aria-hidden className="inv-veil pointer-events-none absolute inset-0" />
       <div aria-hidden className="dot-grid pointer-events-none absolute inset-0 opacity-[0.16]" />
@@ -99,7 +99,7 @@ export function SiteFooter() {
         </div>
 
         {/* ── نوار میانی: جملهٔ پایانی + بازگشت به بالا ─────────────────── */}
-        <div className="flex flex-wrap items-center justify-between gap-6 border-t inv-rule py-7">
+        <div className="inv-rule flex flex-wrap items-center justify-between gap-6 border-t py-7">
           <p className="inv-soft max-w-xs text-[0.82rem] leading-6">
             {site.organisation} — نهادی عام‌المنفعه، با مجوز رسمی
             <br className="hidden sm:block" />
@@ -116,14 +116,10 @@ export function SiteFooter() {
         </div>
 
         {/* ── خط پایانی ─────────────────────────────────────────────────── */}
-        <div className="inv-muted flex flex-col items-center justify-between gap-3 border-t inv-rule py-6 text-[0.76rem] sm:flex-row">
+        <div className="inv-muted inv-rule flex flex-col items-center justify-between gap-3 border-t py-6 text-[0.76rem] sm:flex-row">
           <p>© {brand.legalName} — همهٔ حقوق محفوظ است.</p>
           <p className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
-            <Link
-              href="/about"
-              prefetch={false}
-              className="inv-link -my-1 inline-flex py-1"
-            >
+            <Link href="/about" prefetch={false} className="inv-link -my-1 inline-flex py-1">
               شرایط استفاده
             </Link>
             <Link
