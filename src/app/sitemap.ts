@@ -17,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${env.siteUrl}/about`, changeFrequency: "monthly", priority: 0.5 },
   ];
 
-  const campaigns = await listCampaigns({ status: "active", page_size: 100 });
+  const campaigns = await listCampaigns({ status: "active" });
   const campaignRoutes: MetadataRoute.Sitemap = campaigns.items.map((campaign) => ({
     url: `${env.siteUrl}/campaigns/${campaign.slug}`,
     lastModified: campaign.created_at || undefined,

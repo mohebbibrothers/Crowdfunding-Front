@@ -9,27 +9,22 @@ import { formatAmount, formatToman } from "@/lib/format/money";
 import { formatInt, formatPercent } from "@/lib/format/numbers";
 import { cn } from "@/lib/utils/cn";
 
-const urgencyMeta: Record<
-  CampaignCardData["urgency_level"],
-  { label: string; tone: "danger" | "gold" | "neutral" | "brand" }
-> = {
-  critical: { label: "بحرانی", tone: "danger" },
-  emergency: { label: "فوری", tone: "danger" },
-  important: { label: "مهم", tone: "gold" },
-  normal: { label: "عادی", tone: "neutral" },
+/** برچسب‌ها عیناً بر پایهٔ `CampaignUrgency` در بک‌اند. */
+const urgencyMeta: Record<CampaignCardData["urgency_level"], { label: string }> = {
+  normal: { label: "عادی" },
+  urgent: { label: "فوری" },
+  emergency: { label: "اضطراری" },
 };
 
-const statusMeta: Record<
-  CampaignCardData["status"],
-  { label: string; tone: "success" | "brand" | "neutral" }
-> = {
-  active: { label: "در حال جمع‌آوری", tone: "brand" },
-  funded: { label: "تأمین شد", tone: "success" },
-  completed: { label: "به پایان رسید", tone: "success" },
-  draft: { label: "پیش‌نویس", tone: "neutral" },
-  cancelled: { label: "لغو شد", tone: "neutral" },
-  expired: { label: "مهلت تمام شد", tone: "neutral" },
-  archived: { label: "بایگانی", tone: "neutral" },
+/** برچسب‌ها عیناً بر پایهٔ `CampaignStatus` در بک‌اند. */
+const statusMeta: Record<CampaignCardData["status"], { label: string }> = {
+  draft: { label: "پیش‌نویس" },
+  active: { label: "در حال جمع‌آوری" },
+  paused: { label: "متوقف موقت" },
+  completed: { label: "تکمیل ظرفیت" },
+  executing: { label: "در حال اجرا" },
+  fulfilled: { label: "اجرا و گزارش شد" },
+  cancelled: { label: "لغو شد" },
 };
 
 /**
@@ -88,7 +83,11 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
 
   const urgency = urgencyMeta[urgency_level];
   const state = statusMeta[status];
-  const isFunded = remaining_shares === 0 || status === "funded" || status === "completed";
+  const isFunded =
+    remaining_shares === 0 ||
+    status === "completed" ||
+    status === "fulfilled" ||
+    status === "executing";
 
   return (
     <article className="card card-lift glow-card group flex h-full flex-col overflow-hidden">
@@ -116,14 +115,14 @@ export function CampaignCard({ campaign }: { campaign: CampaignCardData }) {
           <span
             className={cn(
               "inline-flex items-center gap-1.5 rounded-pill border border-white/20 bg-black/60 px-2.5 py-1 text-[0.71rem] font-bold backdrop-blur-md",
-              urgency_level === "emergency" || urgency_level === "critical"
-                ? "text-rose-200"
-                : urgency_level === "important"
-                  ? "text-amber-200"
+              urgency_level === "emergency"
+                ? "text-rose-100"
+                : urgency_level === "urgent"
+                  ? "text-amber-100"
                   : "text-white",
             )}
           >
-            {urgency_level === "emergency" || urgency_level === "critical" ? (
+            {urgency_level === "emergency" ? (
               <span className="relative flex size-1.5">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-current opacity-60" />
                 <span className="relative inline-flex size-1.5 rounded-full bg-current" />

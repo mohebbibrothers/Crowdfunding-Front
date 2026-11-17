@@ -46,13 +46,17 @@ export const matchingGrantSchema = z
   .nullable()
   .catch(null);
 
+/**
+ * این enumها باید عیناً با `apps/campaigns/choices.py` در بک‌اند یکی باشند.
+ * پیش‌تر مقادیر «funded/expired/archived» و «important/critical» این‌جا بود که
+ * در بک‌اند وجود ندارند؛ نتیجه: `.catch` وضعیت واقعیِ `executing` را بی‌صدا
+ * به `active` و فوریتِ `urgent` را به `normal` تبدیل می‌کرد.
+ */
 export const campaignStatusSchema = z
-  .enum(["draft", "active", "funded", "completed", "cancelled", "expired", "archived"])
+  .enum(["draft", "active", "paused", "completed", "executing", "fulfilled", "cancelled"])
   .catch("active");
 
-export const campaignUrgencySchema = z
-  .enum(["normal", "important", "emergency", "critical"])
-  .catch("normal");
+export const campaignUrgencySchema = z.enum(["normal", "urgent", "emergency"]).catch("normal");
 
 export const campaignSummarySchema = z.object({
   id: safeString,

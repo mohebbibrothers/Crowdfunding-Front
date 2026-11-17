@@ -11,7 +11,6 @@ export function AllCampaignsTile({ count }: { count: number }) {
   return (
     <Link
       href="/campaigns"
-      prefetch={false}
       className="group card-lift flex h-full min-h-[22rem] flex-col justify-between rounded-card border border-dashed border-line-strong bg-surface-2/50 p-6 transition-colors hover:border-brand-soft hover:bg-brand-tint/60"
     >
       <span className="inline-flex size-11 items-center justify-center rounded-2xl border border-line bg-surface text-accent">

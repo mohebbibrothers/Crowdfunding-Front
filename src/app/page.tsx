@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   const [campaigns] = await Promise.all([
-    listCampaigns({ status: "active", order: "fair", page_size: 3 }),
+    listCampaigns({ status: "active", order: "fair" }),
     getPlatform(),
   ]);
 

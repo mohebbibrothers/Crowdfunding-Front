@@ -1,6 +1,10 @@
 import { chromium } from "playwright-core";
+import { mkdirSync } from "node:fs";
+
+const OUT = process.env.OUT || new URL("../../shots/", import.meta.url).pathname;
+mkdirSync(OUT, { recursive: true });
 const b = await chromium.launch();
-const URL = "http://127.0.0.1:3047/";
+const TARGET = process.env.BASE || "http://127.0.0.1:3000/";
 
 // ۱) کاهش حرکت
 {
@@ -9,7 +13,7 @@ const URL = "http://127.0.0.1:3047/";
     reducedMotion: "reduce",
   });
   const p = await ctx.newPage();
-  await p.goto(URL, { waitUntil: "domcontentloaded" });
+  await p.goto(TARGET, { waitUntil: "domcontentloaded" });
   await p.waitForTimeout(1500);
   const r = await p.evaluate(() => {
     const els = [...document.querySelectorAll("[data-reveal]")];
@@ -31,7 +35,7 @@ const URL = "http://127.0.0.1:3047/";
     };
   });
   console.log("reduced-motion:", JSON.stringify(r));
-  await p.screenshot({ path: "/home/user/fallback-reduced.png" });
+  await p.screenshot({ path: `${OUT}fallback-reduced.png` });
   await ctx.close();
 }
 
@@ -42,7 +46,7 @@ const URL = "http://127.0.0.1:3047/";
     javaScriptEnabled: false,
   });
   const p = await ctx.newPage();
-  await p.goto(URL, { waitUntil: "domcontentloaded" });
+  await p.goto(TARGET, { waitUntil: "domcontentloaded" });
   await p.waitForTimeout(800);
   const r = await p.evaluate(() => ({
     hidden: [...document.querySelectorAll("[data-reveal]")].filter(
@@ -50,7 +54,7 @@ const URL = "http://127.0.0.1:3047/";
     ).length,
   }));
   console.log("no-js:", JSON.stringify(r));
-  await p.screenshot({ path: "/home/user/fallback-nojs.png" });
+  await p.screenshot({ path: `${OUT}fallback-nojs.png` });
   await ctx.close();
 }
 await b.close();

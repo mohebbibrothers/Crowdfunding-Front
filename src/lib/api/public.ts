@@ -15,15 +15,23 @@ import {
 /** پنجرهٔ تازه‌سازی کش صفحه‌های عمومی (ثانیه). */
 const PUBLIC_REVALIDATE = 60;
 
+/**
+ * پارامترهای فهرست عمومی حرکت‌ها — دقیقاً همان چیزی که
+ * `PublicCampaignListView` می‌پذیرد (بدون صفحه‌بندی؛ سقف ۱۰۰ مورد در بک‌اند).
+ */
+export type CampaignStatusFilter = "active" | "completed" | "executing" | "fulfilled";
+export type CampaignOrder = "fair" | "newest" | "ending_soon" | "most_funded" | "urgent";
+export type CampaignUrgencyFilter = "normal" | "urgent" | "emergency";
+
 export interface CampaignQuery {
-  status?: "active" | "funded" | "completed";
-  order?: "fair" | "newest" | "ending" | "progress" | "urgency";
+  status?: CampaignStatusFilter;
+  order?: CampaignOrder;
   category?: string;
+  benefactor?: string;
   province?: string;
-  urgency?: "normal" | "important" | "emergency" | "critical";
+  urgency?: CampaignUrgencyFilter;
   has_matching?: boolean;
   q?: string;
-  page_size?: number;
 }
 
 export interface PublicResult<T> {
@@ -40,11 +48,11 @@ export async function listCampaigns(
       status: query.status ?? "active",
       order: query.order ?? "fair",
       category: query.category,
+      benefactor: query.benefactor,
       province: query.province,
       urgency: query.urgency,
-      has_matching: query.has_matching,
+      has_matching: query.has_matching ? "true" : undefined,
       q: query.q,
-      page_size: query.page_size ?? 12,
     },
     next: { revalidate: PUBLIC_REVALIDATE, tags: ["campaigns"] },
   });

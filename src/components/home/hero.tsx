@@ -200,7 +200,7 @@ export function Hero({ campaignCount, top }: HeroProps) {
             delay={520}
             className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
           >
-            <ButtonLink href="/campaigns" prefetch={false} size="lg">
+            <ButtonLink href="/campaigns" size="lg">
               سهیم می‌شوم
               <ArrowLeft className="size-4" aria-hidden />
             </ButtonLink>

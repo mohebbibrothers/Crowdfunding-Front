@@ -71,7 +71,7 @@ export function SiteHeader() {
               <Link
                 key={item.href}
                 href={item.href}
-                prefetch={false}
+                prefetch={item.href === "/campaigns"}
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "group relative rounded-pill px-3.5 py-2 text-[0.9rem] font-semibold transition-colors",
@@ -100,12 +100,7 @@ export function SiteHeader() {
           >
             ورود
           </Link>
-          <ButtonLink
-            href="/campaigns"
-            prefetch={false}
-            size="sm"
-            className="hidden md:inline-flex"
-          >
+          <ButtonLink href="/campaigns" size="sm" className="hidden md:inline-flex">
             سهیم می‌شوم
             <ArrowLeft className="size-3.5" aria-hidden />
           </ButtonLink>
